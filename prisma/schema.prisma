@@ -9,3 +9,33 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  UserId       Int      @id @default(autoincrement())
+  Name         String
+  Email        String   @unique
+  CreationDate DateTime @default(now())
+  UpdateDate   DateTime @updatedAt
+}
+
+model BusinessUnit {
+  BusinessUnitId Int      @id @default(autoincrement())
+  Name           String
+  Email          String   @unique
+  Adress         String
+  Phone          String
+  ImageUrl       String
+  AvgRating      Decimal  @db.Decimal(10, 2)
+  CreationDate   DateTime @default(now())
+  UpdateDate     DateTime @updatedAt
+}
+
+model Service {
+  ServiceId      Int      @id @default(autoincrement())
+  Name           String
+  BusinessUnitId Int
+  ImageUrl       String
+  Description    String
+  CreationDate   DateTime @default(now())
+  UpdateDate     DateTime @updatedAt
+}
