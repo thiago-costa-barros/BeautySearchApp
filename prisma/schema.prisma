@@ -11,31 +11,107 @@ datasource db {
 }
 
 model User {
-  UserId       Int      @id @default(autoincrement())
+  UserId       Int       @id @default(autoincrement()) @db.Integer
   Name         String
-  Email        String   @unique
-  CreationDate DateTime @default(now())
-  UpdateDate   DateTime @updatedAt
+  Email        String       @unique
+  CreationDate DateTime     @default(now())
+  UpdateDate   DateTime     @updatedAt
+  Bookings     Booking[]
+  Avaliation   Avaliation[]
 }
 
 model BusinessUnit {
-  BusinessUnitId Int      @id @default(autoincrement())
+  BusinessUnitId Int        @id @default(autoincrement()) @db.Integer
   Name           String
-  Email          String   @unique
+  Email          String        @unique
   Adress         String
   Phone          String
   ImageUrl       String
-  AvgRating      Decimal  @db.Decimal(10, 2)
-  CreationDate   DateTime @default(now())
-  UpdateDate     DateTime @updatedAt
+  AvgRating      Decimal       @db.Decimal(10, 2)
+  CreationDate   DateTime      @default(now())
+  UpdateDate     DateTime      @updatedAt
+  Bookings       Booking[]
+  Service        Service[]
+  ServiceNote    ServiceNote[]
+  Coupon         Coupon[]
+  Avaliation     Avaliation[]
 }
 
 model Service {
-  ServiceId      Int      @id @default(autoincrement())
+  ServiceId      Int        @id @default(autoincrement()) @db.Integer
   Name           String
   BusinessUnitId Int
+  BusinessUnit   BusinessUnit  @relation(fields: [BusinessUnitId], references: [BusinessUnitId])
+  Coupons        Coupon[]
+  Categories     Category[]
   ImageUrl       String
   Description    String
-  CreationDate   DateTime @default(now())
-  UpdateDate     DateTime @updatedAt
+  CreationDate   DateTime      @default(now())
+  UpdateDate     DateTime      @updatedAt
+  ServiceNote    ServiceNote[]
+}
+
+model Category {
+  CategoryId       Int   @id @default(autoincrement()) @db.Integer
+  Name             String
+  CreationDate     DateTime @default(now())
+  UpdateDate       DateTime @updatedAt
+  Service          Service? @relation(fields: [serviceServiceId], references: [ServiceId])
+  serviceServiceId Int?
+}
+
+model ServiceNote {
+  ServiceNoteId  Int       @id @default(autoincrement()) @db.Integer
+  ServiceId      Int
+  Service        Service      @relation(fields: [ServiceId], references: [ServiceId])
+  BusinessUnitId Int
+  BusinessUnit   BusinessUnit @relation(fields: [BusinessUnitId], references: [BusinessUnitId])
+  CouponId       Int
+  Coupon         Coupon       @relation(fields: [CouponId], references: [CouponId])
+  InitialValue   Decimal      @db.Decimal(10, 2)
+  CreationDate   DateTime     @default(now())
+  UpdateDate     DateTime     @updatedAt
+  Booking        Booking[]
+}
+
+model Booking {
+  BookingId             Int       @id @default(autoincrement()) @db.Integer
+  UserId                Int
+  User                  User         @relation(fields: [UserId], references: [UserId])
+  BusinessUnitId        Int
+  BusinessUnit          BusinessUnit @relation(fields: [BusinessUnitId], references: [BusinessUnitId])
+  ServiceNoteId         Int
+  ServiceNote           ServiceNote  @relation(fields: [ServiceNoteId], references: [ServiceNoteId])
+  InitialValue          Decimal      @db.Decimal(10, 2)
+  PrincipalValue        Decimal      @db.Decimal(10, 2)
+  WasConsolidatedCoupon Boolean
+  CouponId              Int
+  Coupon                Coupon       @relation(fields: [CouponId], references: [CouponId])
+  CreationDate          DateTime     @default(now())
+  UpdateDate            DateTime     @updatedAt
+}
+
+model Coupon {
+  CouponId       Int        @id @default(autoincrement()) @db.Integer
+  Name           String
+  BusinessUnitId Int
+  BusinessUnit   BusinessUnit  @relation(fields: [BusinessUnitId], references: [BusinessUnitId])
+  ServiceId      Int
+  Service        Service       @relation(fields: [ServiceId], references: [ServiceId])
+  CreationDate   DateTime      @default(now())
+  UpdateDate     DateTime      @updatedAt
+  ServiceNote    ServiceNote[]
+  Booking        Booking[]
+}
+
+model Avaliation {
+  AvaliationId   Int       @id @default(autoincrement()) @db.Integer
+  UserId         Int
+  User           User         @relation(fields: [UserId], references: [UserId])
+  BusinessUnitId Int
+  BusinessUnit   BusinessUnit @relation(fields: [BusinessUnitId], references: [BusinessUnitId])
+  Message        String
+  Rating         Decimal      @db.Decimal(10, 2)
+  CreationDate   DateTime     @default(now())
+  UpdateDate     DateTime     @updatedAt
 }
