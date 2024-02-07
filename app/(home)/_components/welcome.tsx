@@ -3,7 +3,7 @@ import { format } from "date-fns"
 
 const Welcome = () => {
     return ( 
-        <div className="p-4">
+        <div>
         <h2 className="text-xl font-bold">
           Olá, Thiago!
         </h2>
