@@ -23,7 +23,7 @@ model User {
 model BusinessUnit {
   BusinessUnitId Int        @id @default(autoincrement()) @db.Integer
   Name           String
-  Email          String        @unique
+  Email          String?        @unique
   Adress         String?
   Phone          String?
   ImageUrl       String?

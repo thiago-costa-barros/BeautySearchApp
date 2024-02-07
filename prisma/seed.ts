@@ -55,6 +55,7 @@ async function seedDatabase() {
             "serenityspa.esthetics@email.com"
         ];
 
+
         // Endereços fictícios para as Unidades de Negócio
         const addresses = [
             "Rua da Barbearia, 123",
@@ -114,29 +115,26 @@ async function seedDatabase() {
             const Name = creativeNames[i];
             const Adress = addresses[i];
             const ImageUrl = images[i];
-            const Email = creativeEmails[i];
+            /*const Email = creativeEmails[i];*/
 
             const businessUnit = await prisma.BusinessUnit.create({
                 data: {
                     Name,
                     Adress,
                     ImageUrl: ImageUrl,
-                    Email,
-                    Phone: null,
-                    AvgRating: null,
-                    UpdateDate: null,
+                    /*Email,*/
                 },
             });
 
             for (const service of services) {
                 await prisma.service.create({
                     data: {
-                        name: service.name,
-                        description: service.description,
-                        price: service.price,
+                        Name: service.name,
+                        Description: service.description,
+                        ImageUrl: service.imageUrl,
                         BusinessUnit: {
                             connect: {
-                                id: businessUnit.BusinessUnitId,
+                                BusinessUnitId: businessUnit.BusinessUnitId,
                             },
                         },
                     },
@@ -149,7 +147,7 @@ async function seedDatabase() {
         // Fechar a conexão com o banco de dados
         await prisma.$disconnect();
     } catch (error) {
-        console.error("Erro ao criar as barbearias:", error);
+        console.error("Erro ao criar as Unidades de Negócio:", error);
     }
 }
 
