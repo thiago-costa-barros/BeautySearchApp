@@ -1,10 +1,15 @@
 import BookingItem from "../_components/booking_item";
+import BusinessUnitItem from "../_components/businessUnit_item";
 import Header from "../_components/header";
 import Search from "./_components/search";
 import Welcome from "./_components/welcome";
+import { db } from "../_lib/prisma";
 
 
-export default function Home() {
+export default async function Home() {
+
+  const businessUnits = await db.businessUnit.findMany()
+
   return (
     <div>
       <Header />
@@ -20,10 +25,15 @@ export default function Home() {
         </h2>
         <BookingItem />
       </div>
-      <div className="px-5 mt-6">
-        <h2 className="mb-3 font-bold text-sm text-gray-400 uppercase">
+      <div className="mt-6">
+        <h2 className="px-5 mb-3 font-bold text-sm text-gray-400 uppercase">
           Recomendados
         </h2>
+        <div >
+          {businessUnits.map((businessUnit)=> (
+            <BusinessUnitItem key={businessUnit.BusinessUnitId} businessUnit={businessUnit} />
+          ))}
+        </div>
       </div>
     </div>
   );
