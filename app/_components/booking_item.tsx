@@ -9,7 +9,7 @@ const BookingItem = () => {
         <Card className="flex items-center justify-between">
             <CardContent className="p-5" >
                 <div className="flex flex-col gap-2">
-                    <Badge className="bg-orange-900 text-primary hover:bg-orange-900 w-fit">
+                    <Badge className="bg-slate-800 text-slate-300 hover:bg-slate-800 w-fit">
                         Confirmado
                     </Badge>
                     <h2 className="font-bold">
@@ -28,13 +28,13 @@ const BookingItem = () => {
             </CardContent>
             <CardContent className="p-5">
                 <div className="p-5 flex flex-col items-center justify-center px-3 border-l-2 border-solid ">
-                    <p className="text-sm">
-                        Março
+                    <p className="text-sm font-semibold">
+                        Outubro
                     </p>
-                    <p className="text-2xl">
+                    <p className="text-2xl font-bold">
                         13
                     </p>
-                    <p className="text-sm">
+                    <p className="text-sm font-semibold">
                         11:30
                     </p>
                 </div>
