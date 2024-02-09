@@ -21,7 +21,7 @@ const BusinessUnitItem = ({ businessUnit }: BusinessUnitItemProps) => {
                             <span>
                                 {businessUnit.AvgRating !== null
                                 ? 
-                                businessUnit.AvgRating.toString().replace('.', ',') : 'N/A'}
+                                businessUnit.AvgRating.toFixed(2).replace('.', ',') : 'N/A'}
                             </span>
                         </Badge>
                     </div>
