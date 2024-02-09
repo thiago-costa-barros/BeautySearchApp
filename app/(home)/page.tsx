@@ -29,8 +29,8 @@ export default async function Home() {
         <h2 className="px-5 mb-3 font-bold text-sm text-gray-400 uppercase">
           Recomendados
         </h2>
-        <div >
-          {businessUnits.map((businessUnit)=> (
+        <div className="px-5 flex gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+          {businessUnits.map((businessUnit) => (
             <BusinessUnitItem key={businessUnit.BusinessUnitId} businessUnit={businessUnit} />
           ))}
         </div>
