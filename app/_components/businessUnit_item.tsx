@@ -18,7 +18,11 @@ const BusinessUnitItem = ({ businessUnit }: BusinessUnitItemProps) => {
                     <div className="absolute top-2 left-2 z-50">
                         <Badge variant="secondary" className=" gap-1 flex items-center opacity-90">
                             <StarIcon className="size-3 fill-primary text-primary" />
-                            <span>4,95</span>
+                            <span>
+                                {businessUnit.AvgRating !== null
+                                ? 
+                                businessUnit.AvgRating.toString().replace('.', ',') : 'N/A'}
+                            </span>
                         </Badge>
                     </div>
                     {businessUnit.ImageUrl && (
