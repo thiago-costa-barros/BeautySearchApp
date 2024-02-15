@@ -1,5 +1,6 @@
 import { db } from "@/app/_lib/prisma";
 import BusinessUnitInfos from "./_components/businessUnit_infos";
+import ServiceItem from "./_components/service_item";
 
 interface BusinessUnitDetailsPageProps {
     params: {
@@ -18,6 +19,9 @@ const BusinessUnitDetailsPage = async ({ params }: BusinessUnitDetailsPageProps)
         where: {
             BusinessUnitId: businessUnitId
         },
+        include: {
+            Service: true,
+        }
     });
 
     if (!businessUnit) {
@@ -26,9 +30,15 @@ const BusinessUnitDetailsPage = async ({ params }: BusinessUnitDetailsPageProps)
     }
 
     return (
-        <>
-            <BusinessUnitInfos businessUnit={businessUnit}/>
-        </>
+        <div>
+            <BusinessUnitInfos businessUnit={businessUnit} />
+            
+            <div className="px-5 flex flex-col gap-3">
+                {businessUnit.Service.map(service => (
+                    <ServiceItem key={service.ServiceId} service={service} />
+                ))}
+            </div>
+        </div>
     );
 }
 
