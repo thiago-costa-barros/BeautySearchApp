@@ -9,7 +9,12 @@ import { db } from "../_lib/prisma";
 export default async function Home() {
 
   const businessUnits = await db.businessUnit.findMany()
-
+  const businessUnitsAvgOrderBy = await db.businessUnit.findMany({
+    orderBy: {
+      AvgRating: 'desc' // Ordenar por AvgRating em ordem decrescente
+    },
+    take: 5 // Limitar o resultado aos top 5
+  });
   return (
     <div>
       <Header />
@@ -40,7 +45,7 @@ export default async function Home() {
           Populares
         </h2>
         <div className="px-5 flex gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-          {businessUnits.map((businessUnit) => (
+          {businessUnitsAvgOrderBy.map((businessUnit) => (
             <BusinessUnitItem key={businessUnit.BusinessUnitId} businessUnit={businessUnit} />
           ))}
         </div>
