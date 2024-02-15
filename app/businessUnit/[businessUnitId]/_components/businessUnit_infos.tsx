@@ -47,7 +47,7 @@ const BusinessUnitInfos = ({businessUnit} : BusinessUnitInfosProps) => {
                     </p>
                 </div>
                 <div className="flex items-center gap-2 mt-2">
-                    <StarIcon className="fill-primary text-primary size-5" />
+                    <StarIcon className=" text-primary size-5" />
                     <p className="text-sm ">
                         {businessUnit.AvgRating !== null
                             ? businessUnit.AvgRating.toString().replace('.', ',')

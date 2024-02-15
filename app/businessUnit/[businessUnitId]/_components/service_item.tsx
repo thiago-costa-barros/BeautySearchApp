@@ -33,9 +33,13 @@ const ServiceItem = ({ service }: ServiceItemProps) => {
                             {service.Description}
                         </p>
                         <div className=" flex items-center justify-between">
-                            <h2 className="text-lg font-semibold text-primary">
-                                R$ 50,00
-                            </h2>
+                            <p className="text-lg font-bold text-primary">
+                                {Intl.NumberFormat(
+                                    "pt-BR", {
+                                        style: "currency",
+                                        currency: "BRL",
+                                    }).format(Number(service.InitialValue))}
+                            </p>
                             <Button variant="secondary" className="mt-3 w-24">
                                 Reservar
                             </Button>

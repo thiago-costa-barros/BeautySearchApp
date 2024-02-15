@@ -33,7 +33,7 @@ const BusinessUnitDetailsPage = async ({ params }: BusinessUnitDetailsPageProps)
         <div>
             <BusinessUnitInfos businessUnit={businessUnit} />
             
-            <div className="px-5 flex flex-col gap-3">
+            <div className="px-5 py-6 flex flex-col gap-4">
                 {businessUnit.Service.map(service => (
                     <ServiceItem key={service.ServiceId} service={service} />
                 ))}
