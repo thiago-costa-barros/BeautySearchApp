@@ -40,7 +40,6 @@ const BusinessUnitItem = ({ businessUnit }: BusinessUnitItemProps) => {
                             style={{
                                 objectFit: "cover"
                             }}
-                            className="px-1 rounded-2xl"
                         />
                     )}
                 </div>
