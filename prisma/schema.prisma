@@ -11,13 +11,17 @@ datasource db {
 }
 
 model User {
-  UserId       Int          @id @default(autoincrement()) @db.Integer
-  Name         String
-  Email        String       @unique
-  CreationDate DateTime     @default(now())
-  UpdateDate   DateTime?    @updatedAt
-  Bookings     Booking[]
-  Avaliation   Avaliation[]
+  UserId        Int          @id @default(autoincrement()) @db.Integer
+  Name          String
+  Email         String       @unique
+  EmailVerified DateTime?
+  Image         String?
+  CreationDate  DateTime     @default(now())
+  UpdateDate    DateTime?    @updatedAt
+  Bookings      Booking[]
+  Avaliation    Avaliation[]
+  Accounts      Account[]
+  Sessions      Session[]
 }
 
 model BusinessUnit {
@@ -46,7 +50,7 @@ model Service {
   Bookings       Booking[]
   ImageUrl       String?
   Description    String?
-  InitialValue   Decimal?      @db.Decimal(10, 2)
+  InitialValue   Decimal?     @db.Decimal(10, 2)
   CreationDate   DateTime     @default(now())
   UpdateDate     DateTime?    @updatedAt
 }
@@ -99,4 +103,39 @@ model Avaliation {
   Rating         Decimal      @db.Decimal(10, 2)
   CreationDate   DateTime     @default(now())
   UpdateDate     DateTime?    @updatedAt
+}
+
+model Account {
+  AccountId         String  @id @default(cuid())
+  UserId            Int
+  Type              String
+  Provider          String
+  ProviderAccountId String
+  RefreshToken      String? @db.Text
+  AccessToken       String? @db.Text
+  ExpiresAt         Int?
+  TokenType         String?
+  Scope             String?
+  TokenId           String? @db.Text
+  SessionState      String?
+
+  User User @relation(fields: [UserId], references: [UserId], onDelete: Cascade)
+
+  @@unique([Provider, ProviderAccountId])
+}
+
+model Session {
+  SessionId    String   @id @default(cuid())
+  SessionToken String   @unique
+  UserId       Int
+  Expires      DateTime
+  User         User     @relation(fields: [UserId], references: [UserId], onDelete: Cascade)
+}
+
+model VerificationToken {
+  Identifier String
+  Token      String   @unique
+  Expires    DateTime
+
+  @@unique([Identifier, Token])
 }
