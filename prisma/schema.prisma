@@ -11,101 +11,86 @@ datasource db {
 }
 
 model User {
-  UserId       Int       @id @default(autoincrement()) @db.Integer
+  UserId       Int          @id @default(autoincrement()) @db.Integer
   Name         String
   Email        String       @unique
   CreationDate DateTime     @default(now())
-  UpdateDate   DateTime?     @updatedAt
+  UpdateDate   DateTime?    @updatedAt
   Bookings     Booking[]
   Avaliation   Avaliation[]
 }
 
 model BusinessUnit {
-  BusinessUnitId Int        @id @default(autoincrement()) @db.Integer
+  BusinessUnitId Int          @id @default(autoincrement()) @db.Integer
   Name           String
-  Email          String?        @unique
+  Email          String?      @unique
   Adress         String?
   Phone          String?
   ImageUrl       String?
-  AvgRating      Decimal?       @db.Decimal(10, 2)
-  CreationDate   DateTime      @default(now())
-  UpdateDate     DateTime?      @updatedAt
+  AvgRating      Decimal?     @db.Decimal(10, 2)
+  CreationDate   DateTime     @default(now())
+  UpdateDate     DateTime?    @updatedAt
   Bookings       Booking[]
   Service        Service[]
-  ServiceNote    ServiceNote[]
   Coupon         Coupon[]
   Avaliation     Avaliation[]
 }
 
 model Service {
-  ServiceId      Int        @id @default(autoincrement()) @db.Integer
+  ServiceId      Int          @id @default(autoincrement()) @db.Integer
   Name           String
   BusinessUnitId Int
-  BusinessUnit   BusinessUnit  @relation(fields: [BusinessUnitId], references: [BusinessUnitId])
+  BusinessUnit   BusinessUnit @relation(fields: [BusinessUnitId], references: [BusinessUnitId])
   Coupons        Coupon[]
   Categories     Category[]
+  Bookings       Booking[]
   ImageUrl       String?
   Description    String?
-  CreationDate   DateTime      @default(now())
-  UpdateDate     DateTime?      @updatedAt
-  ServiceNote    ServiceNote[]
+  InitialValue   Decimal?      @db.Decimal(10, 2)
+  CreationDate   DateTime     @default(now())
+  UpdateDate     DateTime?    @updatedAt
 }
 
 model Category {
-  CategoryId       Int   @id @default(autoincrement()) @db.Integer
-  Name             String
-  CreationDate     DateTime @default(now())
-  UpdateDate       DateTime? @updatedAt
-  Service          Service @relation(fields: [ServiceId], references: [ServiceId])
-  ServiceId Int
-}
-
-model ServiceNote {
-  ServiceNoteId  Int       @id @default(autoincrement()) @db.Integer
-  ServiceId      Int
-  Service        Service      @relation(fields: [ServiceId], references: [ServiceId])
-  BusinessUnitId Int
-  BusinessUnit   BusinessUnit @relation(fields: [BusinessUnitId], references: [BusinessUnitId])
-  CouponId       Int?
-  Coupon         Coupon?       @relation(fields: [CouponId], references: [CouponId])
-  InitialValue   Decimal      @db.Decimal(10, 2)
-  CreationDate   DateTime     @default(now())
-  UpdateDate     DateTime?     @updatedAt
-  Booking        Booking[]
+  CategoryId   Int       @id @default(autoincrement()) @db.Integer
+  Name         String
+  CreationDate DateTime  @default(now())
+  UpdateDate   DateTime? @updatedAt
+  Service      Service   @relation(fields: [ServiceId], references: [ServiceId])
+  ServiceId    Int
 }
 
 model Booking {
-  BookingId             Int       @id @default(autoincrement()) @db.Integer
+  BookingId             Int          @id @default(autoincrement()) @db.Integer
   UserId                Int
   User                  User         @relation(fields: [UserId], references: [UserId])
   BusinessUnitId        Int
   BusinessUnit          BusinessUnit @relation(fields: [BusinessUnitId], references: [BusinessUnitId])
-  ServiceNoteId         Int
-  ServiceNote           ServiceNote  @relation(fields: [ServiceNoteId], references: [ServiceNoteId])
+  ServiceId             Int
+  Service               Service      @relation(fields: [ServiceId], references: [ServiceId])
   InitialValue          Decimal      @db.Decimal(10, 2)
   PrincipalValue        Decimal      @db.Decimal(10, 2)
   WasConsolidatedCoupon Boolean
   CouponId              Int?
-  Coupon                Coupon?       @relation(fields: [CouponId], references: [CouponId])
+  Coupon                Coupon?      @relation(fields: [CouponId], references: [CouponId])
   CreationDate          DateTime     @default(now())
-  UpdateDate            DateTime?     @updatedAt
+  UpdateDate            DateTime?    @updatedAt
 }
 
 model Coupon {
-  CouponId       Int        @id @default(autoincrement()) @db.Integer
+  CouponId       Int          @id @default(autoincrement()) @db.Integer
   Name           String
   BusinessUnitId Int
-  BusinessUnit   BusinessUnit  @relation(fields: [BusinessUnitId], references: [BusinessUnitId])
+  BusinessUnit   BusinessUnit @relation(fields: [BusinessUnitId], references: [BusinessUnitId])
   ServiceId      Int
-  Service        Service       @relation(fields: [ServiceId], references: [ServiceId])
-  CreationDate   DateTime      @default(now())
-  UpdateDate     DateTime?      @updatedAt
-  ServiceNote    ServiceNote[]
+  Service        Service      @relation(fields: [ServiceId], references: [ServiceId])
+  CreationDate   DateTime     @default(now())
+  UpdateDate     DateTime?    @updatedAt
   Booking        Booking[]
 }
 
 model Avaliation {
-  AvaliationId   Int       @id @default(autoincrement()) @db.Integer
+  AvaliationId   Int          @id @default(autoincrement()) @db.Integer
   UserId         Int
   User           User         @relation(fields: [UserId], references: [UserId])
   BusinessUnitId Int
@@ -113,5 +98,5 @@ model Avaliation {
   Message        String
   Rating         Decimal      @db.Decimal(10, 2)
   CreationDate   DateTime     @default(now())
-  UpdateDate     DateTime?     @updatedAt
+  UpdateDate     DateTime?    @updatedAt
 }
