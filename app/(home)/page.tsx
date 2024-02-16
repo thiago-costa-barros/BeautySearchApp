@@ -8,7 +8,12 @@ import { db } from "../_lib/prisma";
 
 export default async function Home() {
 
-  const businessUnits = await db.businessUnit.findMany()
+  const businessUnits = await db.businessUnit.findMany({
+    orderBy: {
+      creationDate: 'desc'
+    },
+    take: 10
+  });
   const businessUnitsAvgOrderBy = await db.businessUnit.findMany({
     orderBy: {
       avgRating: 'desc' // Ordenar por AvgRating em ordem decrescente
