@@ -8,7 +8,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui
 import { CalendarDaysIcon, HomeIcon, LogInIcon, LogOutIcon, MenuIcon, UserIcon } from "lucide-react";
 import { Button } from "./ui/button";
 
-const MenuIconComponent = () => {
+const SideMenuComponent = () => {
     const { data, status } = useSession();
 
     const handleLogInClick = () => signIn("google");
@@ -17,7 +17,7 @@ const MenuIconComponent = () => {
     return (
         <Sheet>
             <SheetTrigger>
-                <Button variant={"outline"} size={"icon"} className="h-8 w-8">
+                <Button variant="outline" size="icon" >
                     <MenuIcon />
                 </Button>
             </SheetTrigger>
@@ -65,7 +65,7 @@ const MenuIconComponent = () => {
                         </Link>
                     </Button>
                     {data?.user && (
-                        <Button variant="outline" className="justify-start asChild">
+                        <Button variant="outline" className="justify-start"asChild>
                             <Link href="/bookings">
                                 <CalendarDaysIcon className="mr-2" size={18} />
                                 Agendamentos
@@ -78,4 +78,4 @@ const MenuIconComponent = () => {
     );
 }
 
-export default MenuIconComponent;
+export default SideMenuComponent;

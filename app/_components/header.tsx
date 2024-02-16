@@ -4,7 +4,7 @@
 import { Card, CardContent } from "./ui/card";
 import Image from "next/image";
 import { signIn, signOut, useSession } from "next-auth/react";
-import MenuIconComponent from "./menuIcon";
+import SideMenuComponent from "./sideMenuIcon";
 
 const Header = () => {
     const { data, status } = useSession();
@@ -17,7 +17,7 @@ const Header = () => {
             <Card>
                 <CardContent className="p-5  justify-between flex items-center flex-row">
                     <Image src="/logo_teste.png" width={120} height={45} alt={""} />
-                    <MenuIconComponent/>
+                    <SideMenuComponent/>
                 </CardContent>
             </Card>
         </>

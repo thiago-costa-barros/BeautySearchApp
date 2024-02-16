@@ -1,5 +1,5 @@
 "use client"
-import MenuIconComponent from "@/app/_components/menuIcon";
+import SideMenuComponent from "@/app/_components/sideMenuIcon";
 import { Button } from "@/app/_components/ui/button";
 import { BusinessUnit } from "@prisma/client";
 import { ChevronLeftIcon, MapPinIcon, MenuIcon, StarIcon } from "lucide-react";
@@ -23,7 +23,7 @@ const BusinessUnitInfos = ({businessUnit} : BusinessUnitInfosProps) => {
                     <ChevronLeftIcon onClick={handleReturnClick}/>
                 </Button>
                 <Button className="z-50 absolute top-3 right-3" size="icon" variant="outline">
-                    <MenuIconComponent/>
+                    <SideMenuComponent/>
                 </Button>
                 {businessUnit.imageUrl && (
                     <Image
@@ -51,7 +51,7 @@ const BusinessUnitInfos = ({businessUnit} : BusinessUnitInfosProps) => {
                     <StarIcon className=" text-primary size-5" />
                     <p className="text-sm ">
                         {businessUnit.avgRating !== null
-                            ? businessUnit.avgRating.toString().replace('.', ',')
+                            ? Number(businessUnit.avgRating).toFixed(2).toString().replace('.', ',')
                             : 'N/A'} (qnt avaliações)
                     </p>
                 </div>
