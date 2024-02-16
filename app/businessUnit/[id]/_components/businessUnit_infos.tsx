@@ -1,4 +1,5 @@
 "use client"
+import MenuIconComponent from "@/app/_components/menuIcon";
 import { Button } from "@/app/_components/ui/button";
 import { BusinessUnit } from "@prisma/client";
 import { ChevronLeftIcon, MapPinIcon, MenuIcon, StarIcon } from "lucide-react";
@@ -22,7 +23,7 @@ const BusinessUnitInfos = ({businessUnit} : BusinessUnitInfosProps) => {
                     <ChevronLeftIcon onClick={handleReturnClick}/>
                 </Button>
                 <Button className="z-50 absolute top-3 right-3" size="icon" variant="outline">
-                    <MenuIcon />
+                    <MenuIconComponent/>
                 </Button>
                 {businessUnit.imageUrl && (
                     <Image
