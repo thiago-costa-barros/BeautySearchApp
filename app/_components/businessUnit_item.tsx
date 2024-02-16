@@ -27,7 +27,7 @@ const BusinessUnitItem = ({ businessUnit }: BusinessUnitItemProps) => {
                             <StarIcon className="size-3 fill-primary text-primary" />
                             <span>
                             {businessUnit.avgRating !== null
-                                    ? Number(businessUnit.avgRating).toString().replace('.', ',')
+                                    ? Number(businessUnit.avgRating).toFixed(2).toString().replace('.', ',')
                                     : 'N/A'}
                             </span>
                         </Badge>

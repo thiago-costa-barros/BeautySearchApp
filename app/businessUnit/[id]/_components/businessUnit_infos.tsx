@@ -24,10 +24,10 @@ const BusinessUnitInfos = ({businessUnit} : BusinessUnitInfosProps) => {
                 <Button className="z-50 absolute top-3 right-3" size="icon" variant="outline">
                     <MenuIcon />
                 </Button>
-                {businessUnit.ImageUrl && (
+                {businessUnit.imageUrl && (
                     <Image
-                        src={businessUnit.ImageUrl}
-                        alt={businessUnit.Name}
+                        src={businessUnit.imageUrl}
+                        alt={businessUnit.name}
                         fill
                         style={{
                             objectFit: "cover"
@@ -38,19 +38,19 @@ const BusinessUnitInfos = ({businessUnit} : BusinessUnitInfosProps) => {
             </div>
             <div className="px-5 py-3">
                 <h1 className="text-2xl font-bold ">
-                    {businessUnit.Name}
+                    {businessUnit.name}
                 </h1>
                 <div className="flex items-center gap-2 mt-2">
                     <MapPinIcon className="text-primary size-5" />
                     <p className="text-sm ">
-                        {businessUnit.Adress}
+                        {businessUnit.adress}
                     </p>
                 </div>
                 <div className="flex items-center gap-2 mt-2">
                     <StarIcon className=" text-primary size-5" />
                     <p className="text-sm ">
-                        {businessUnit.AvgRating !== null
-                            ? businessUnit.AvgRating.toString().replace('.', ',')
+                        {businessUnit.avgRating !== null
+                            ? businessUnit.avgRating.toString().replace('.', ',')
                             : 'N/A'} (qnt avaliações)
                     </p>
                 </div>

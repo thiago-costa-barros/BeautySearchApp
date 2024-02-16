@@ -1,6 +1,6 @@
 "use client"
 
-import { LogOutIcon, MenuIcon, UserIcon } from "lucide-react";
+import { LogInIcon, LogOutIcon, MenuIcon, UserIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import Image from "next/image";
@@ -51,12 +51,13 @@ const Header = () => {
                             ) : (
                                 <div className="flex flex-col gap-3 px-5 py-6">
                                     <div className="flex items-center gap-3">
-                                        <UserIcon />
+                                        <UserIcon size={28} />
                                         <h2 className="font-bold">
                                             Olá, faça seu login!
                                         </h2>
                                     </div>
                                     <Button variant="secondary" className="w-full" onClick={handleLogInClick}>
+                                        <LogInIcon className="mr-2" size={18} />
                                         Fazer Login
                                     </Button>
                                 </div>

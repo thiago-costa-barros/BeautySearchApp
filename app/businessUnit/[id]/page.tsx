@@ -4,23 +4,23 @@ import ServiceItem from "./_components/service_item";
 
 interface BusinessUnitDetailsPageProps {
     params: {
-        businessUnitId?: string;
+        id?: string;
     };
 }
 
 const BusinessUnitDetailsPage = async ({ params }: BusinessUnitDetailsPageProps) => {
-    if (!params.businessUnitId) {
+    if (!params.id) {
         // Redirecionar para a página inicial ou mostrar uma mensagem de erro
         return null;
     }
 
-    const businessUnitId = parseInt(params.businessUnitId, 10);
+    const businessUnitId = parseInt(params.id, 10);
     const businessUnit = await db.businessUnit.findUnique({
         where: {
-            BusinessUnitId: businessUnitId
+            id: businessUnitId
         },
         include: {
-            Service: true,
+            service: true,
         }
     });
 
@@ -34,8 +34,8 @@ const BusinessUnitDetailsPage = async ({ params }: BusinessUnitDetailsPageProps)
             <BusinessUnitInfos businessUnit={businessUnit} />
             
             <div className="px-5 py-6 flex flex-col gap-4">
-                {businessUnit.Service.map(service => (
-                    <ServiceItem key={service.ServiceId} service={service} />
+                {businessUnit.service.map(service => (
+                    <ServiceItem key={service.id} service={service} />
                 ))}
             </div>
         </div>
