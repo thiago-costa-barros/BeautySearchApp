@@ -15,7 +15,7 @@ const BusinessUnitItem = ({ businessUnit }: BusinessUnitItemProps) => {
     const router = useRouter();
 
     const handleBookingClick = () => {
-        router.push(`/businessUnit/${businessUnit.BusinessUnitId}`);
+        router.push(`/businessUnit/${businessUnit.id}`);
     }
 
     return (
@@ -26,16 +26,16 @@ const BusinessUnitItem = ({ businessUnit }: BusinessUnitItemProps) => {
                         <Badge variant="secondary" className=" gap-1 flex items-center opacity-90">
                             <StarIcon className="size-3 fill-primary text-primary" />
                             <span>
-                            {businessUnit.AvgRating !== null
-                                    ? Number(businessUnit.AvgRating).toString().replace('.', ',')
+                            {businessUnit.avgRating !== null
+                                    ? Number(businessUnit.avgRating).toString().replace('.', ',')
                                     : 'N/A'}
                             </span>
                         </Badge>
                     </div>
-                    {businessUnit.ImageUrl && (
+                    {businessUnit.imageUrl && (
                         <Image
-                            src={businessUnit.ImageUrl}
-                            alt={businessUnit.Name}
+                            src={businessUnit.imageUrl}
+                            alt={businessUnit.name}
                             fill
                             style={{
                                 objectFit: "cover"
@@ -45,10 +45,10 @@ const BusinessUnitItem = ({ businessUnit }: BusinessUnitItemProps) => {
                 </div>
                 <div className="px-3 pb-3">
                     <h2 className="mt-2 font-bold overflow-x-hidden text-nowrap text-ellipsis">
-                        {businessUnit.Name}
+                        {businessUnit.name}
                     </h2>
                     <p className="text-sm text-gray-400 overflow-x-hidden text-nowrap text-ellipsis">
-                        {businessUnit.Adress}
+                        {businessUnit.adress}
                     </p>
                     <Button variant="secondary" className="mt-3 w-full" onClick={handleBookingClick}>
                         Reservar

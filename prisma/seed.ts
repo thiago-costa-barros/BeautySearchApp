@@ -112,16 +112,16 @@ async function seedDatabase() {
         // Criar 10 Unidades de Negócio com nomes e endereços fictícios
         const businessUnits = [];
         for (let i = 0; i < 10; i++) {
-            const Name = creativeNames[i];
-            const Adress = addresses[i];
-            const ImageUrl = images[i];
+            const name = creativeNames[i];
+            const adress = addresses[i];
+            const imageUrl = images[i];
             /*const Email = creativeEmails[i];*/
 
             const businessUnit = await prisma.BusinessUnit.create({
                 data: {
-                    Name,
-                    Adress,
-                    ImageUrl: ImageUrl,
+                    name,
+                    adress,
+                    imageUrl: imageUrl,
                     /*Email,*/
                 },
             });
@@ -129,12 +129,13 @@ async function seedDatabase() {
             for (const service of services) {
                 await prisma.service.create({
                     data: {
-                        Name: service.name,
-                        Description: service.description,
-                        ImageUrl: service.imageUrl,
-                        BusinessUnit: {
+                        name: service.name,
+                        description: service.description,
+                        imageUrl: service.imageUrl,
+                        price: service.price,
+                        businessUnit: {
                             connect: {
-                                BusinessUnitId: businessUnit.BusinessUnitId,
+                                id: businessUnit.id,
                             },
                         },
                     },

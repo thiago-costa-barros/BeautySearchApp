@@ -11,131 +11,131 @@ datasource db {
 }
 
 model User {
-  UserId        Int          @id @default(autoincrement()) @db.Integer
-  Name          String
-  Email         String       @unique
-  EmailVerified DateTime?
-  Image         String?
-  CreationDate  DateTime     @default(now())
-  UpdateDate    DateTime?    @updatedAt
-  Bookings      Booking[]
-  Avaliation    Avaliation[]
-  Accounts      Account[]
-  Sessions      Session[]
+  id            Int          @id @default(autoincrement()) @db.Integer
+  name          String
+  email         String       @unique
+  emailVerified DateTime?
+  image         String?
+  creationDate  DateTime     @default(now())
+  updateDate    DateTime?    @updatedAt
+  bookings      Booking[]
+  avaliation    Avaliation[]
+  accounts      Account[]
+  sessions      Session[]
 }
 
 model BusinessUnit {
-  BusinessUnitId Int          @id @default(autoincrement()) @db.Integer
-  Name           String
-  Email          String?      @unique
-  Adress         String?
-  Phone          String?
-  ImageUrl       String?
-  AvgRating      Decimal?     @db.Decimal(10, 2)
-  CreationDate   DateTime     @default(now())
-  UpdateDate     DateTime?    @updatedAt
-  Bookings       Booking[]
-  Service        Service[]
-  Coupon         Coupon[]
-  Avaliation     Avaliation[]
+  id           Int          @id @default(autoincrement()) @db.Integer
+  name         String
+  email        String?      @unique
+  adress       String?
+  phone        String?
+  imageUrl     String?
+  avgRating    Decimal?     @db.Decimal(10, 2)
+  creationDate DateTime     @default(now())
+  updateDate   DateTime?    @updatedAt
+  bookings     Booking[]
+  service      Service[]
+  coupon       Coupon[]
+  avaliation   Avaliation[]
 }
 
 model Service {
-  ServiceId      Int          @id @default(autoincrement()) @db.Integer
-  Name           String
-  BusinessUnitId Int
-  BusinessUnit   BusinessUnit @relation(fields: [BusinessUnitId], references: [BusinessUnitId])
-  Coupons        Coupon[]
-  Categories     Category[]
-  Bookings       Booking[]
-  ImageUrl       String?
-  Description    String?
-  InitialValue   Decimal?     @db.Decimal(10, 2)
-  CreationDate   DateTime     @default(now())
-  UpdateDate     DateTime?    @updatedAt
+  id             Int          @id @default(autoincrement()) @db.Integer
+  name           String
+  businessUnitId Int
+  businessUnit   BusinessUnit @relation(fields: [businessUnitId], references: [id])
+  coupons        Coupon[]
+  categories     Category[]
+  bookings       Booking[]
+  imageUrl       String?
+  description    String?
+  price   Decimal?     @db.Decimal(10, 2)
+  creationDate   DateTime     @default(now())
+  updateDate     DateTime?    @updatedAt
 }
 
 model Category {
-  CategoryId   Int       @id @default(autoincrement()) @db.Integer
-  Name         String
-  CreationDate DateTime  @default(now())
-  UpdateDate   DateTime? @updatedAt
-  Service      Service   @relation(fields: [ServiceId], references: [ServiceId])
-  ServiceId    Int
+  id           Int       @id @default(autoincrement()) @db.Integer
+  name         String
+  creationDate DateTime  @default(now())
+  updateDate   DateTime? @updatedAt
+  service      Service   @relation(fields: [serviceId], references: [id])
+  serviceId    Int
 }
 
 model Booking {
-  BookingId             Int          @id @default(autoincrement()) @db.Integer
-  UserId                Int
-  User                  User         @relation(fields: [UserId], references: [UserId])
-  BusinessUnitId        Int
-  BusinessUnit          BusinessUnit @relation(fields: [BusinessUnitId], references: [BusinessUnitId])
-  ServiceId             Int
-  Service               Service      @relation(fields: [ServiceId], references: [ServiceId])
-  InitialValue          Decimal      @db.Decimal(10, 2)
-  PrincipalValue        Decimal      @db.Decimal(10, 2)
-  WasConsolidatedCoupon Boolean
-  CouponId              Int?
-  Coupon                Coupon?      @relation(fields: [CouponId], references: [CouponId])
-  CreationDate          DateTime     @default(now())
-  UpdateDate            DateTime?    @updatedAt
+  id                    Int          @id @default(autoincrement()) @db.Integer
+  userId                Int
+  user                  User         @relation(fields: [userId], references: [id])
+  businessUnitId        Int
+  businessUnit          BusinessUnit @relation(fields: [businessUnitId], references: [id])
+  serviceId             Int
+  service               Service      @relation(fields: [serviceId], references: [id])
+  initialValue          Decimal      @db.Decimal(10, 2)
+  principalValue        Decimal      @db.Decimal(10, 2)
+  wasConsolidatedCoupon Boolean
+  couponId              Int?
+  coupon                Coupon?      @relation(fields: [couponId], references: [id])
+  creationDate          DateTime     @default(now())
+  cpdateDate            DateTime?    @updatedAt
 }
 
 model Coupon {
-  CouponId       Int          @id @default(autoincrement()) @db.Integer
-  Name           String
-  BusinessUnitId Int
-  BusinessUnit   BusinessUnit @relation(fields: [BusinessUnitId], references: [BusinessUnitId])
-  ServiceId      Int
-  Service        Service      @relation(fields: [ServiceId], references: [ServiceId])
-  CreationDate   DateTime     @default(now())
-  UpdateDate     DateTime?    @updatedAt
-  Booking        Booking[]
+  id             Int          @id @default(autoincrement()) @db.Integer
+  name           String
+  businessUnitId Int
+  businessUnit   BusinessUnit @relation(fields: [businessUnitId], references: [id])
+  serviceId      Int
+  service        Service      @relation(fields: [serviceId], references: [id])
+  creationDate   DateTime     @default(now())
+  updateDate     DateTime?    @updatedAt
+  booking        Booking[]
 }
 
 model Avaliation {
-  AvaliationId   Int          @id @default(autoincrement()) @db.Integer
-  UserId         Int
-  User           User         @relation(fields: [UserId], references: [UserId])
-  BusinessUnitId Int
-  BusinessUnit   BusinessUnit @relation(fields: [BusinessUnitId], references: [BusinessUnitId])
-  Message        String
-  Rating         Decimal      @db.Decimal(10, 2)
-  CreationDate   DateTime     @default(now())
-  UpdateDate     DateTime?    @updatedAt
+  avaliationId   Int          @id @default(autoincrement()) @db.Integer
+  userId         Int
+  user           User         @relation(fields: [userId], references: [id])
+  businessUnitId Int
+  businessUnit   BusinessUnit @relation(fields: [businessUnitId], references: [id])
+  message        String
+  rating         Decimal      @db.Decimal(10, 2)
+  creationDate   DateTime     @default(now())
+  updateDate     DateTime?    @updatedAt
 }
 
 model Account {
-  AccountId         String  @id @default(cuid())
-  UserId            Int
-  Type              String
-  Provider          String
-  ProviderAccountId String
-  RefreshToken      String? @db.Text
-  AccessToken       String? @db.Text
-  ExpiresAt         Int?
-  TokenType         String?
-  Scope             String?
-  TokenId           String? @db.Text
-  SessionState      String?
+  id                String  @id @default(cuid())
+  userId            Int
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
 
-  User User @relation(fields: [UserId], references: [UserId], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([Provider, ProviderAccountId])
+  @@unique([provider, providerAccountId])
 }
 
 model Session {
-  SessionId    String   @id @default(cuid())
-  SessionToken String   @unique
-  UserId       Int
-  Expires      DateTime
-  User         User     @relation(fields: [UserId], references: [UserId], onDelete: Cascade)
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       Int
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
-  Identifier String
-  Token      String   @unique
-  Expires    DateTime
+  identifier String
+  token      String   @unique
+  expires    DateTime
 
-  @@unique([Identifier, Token])
+  @@unique([identifier, token])
 }
