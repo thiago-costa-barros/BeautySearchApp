@@ -7,23 +7,23 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 interface BusinessUnitInfosProps {
-    businessUnit:BusinessUnit
+    businessUnit: BusinessUnit
 }
-const BusinessUnitInfos = ({businessUnit} : BusinessUnitInfosProps) => {
+const BusinessUnitInfos = ({ businessUnit }: BusinessUnitInfosProps) => {
     const router = useRouter();
 
     const handleReturnClick = () => {
-        router.back();
+        router.replace("/");
     }
 
     return (
         <div >
             <div className="h-[250px] w-full relative">
                 <Button className="z-50 absolute top-3 left-3" size="icon" variant="outline">
-                    <ChevronLeftIcon onClick={handleReturnClick}/>
+                    <ChevronLeftIcon onClick={handleReturnClick} />
                 </Button>
                 <Button className="z-50 absolute top-3 right-3" size="icon" variant="outline">
-                    <SideMenuComponent/>
+                    <SideMenuComponent />
                 </Button>
                 {businessUnit.imageUrl && (
                     <Image
