@@ -3,10 +3,11 @@
 import { Button } from "@/app/_components/ui/button";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { Sheet, SheetTrigger } from "@/app/_components/ui/sheet";
-import {  BusinessUnit, Service } from "@prisma/client";
+import { BusinessUnit, Service } from "@prisma/client";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import SideBookingComponent from "./sideBookingButton";
+import { useState } from "react";
 
 interface ServiceItemProps {
     businessUnit: BusinessUnit,
@@ -21,6 +22,7 @@ const ServiceItem = ({ businessUnit, service, isAuthenticated }: ServiceItemProp
             return signIn("google")
         }
     }
+    const [sheetIsOpen, setSheetIsOpen] = useState(false);
 
     //TODO: abrir modal de agendamento
 
@@ -57,7 +59,7 @@ const ServiceItem = ({ businessUnit, service, isAuthenticated }: ServiceItemProp
                                     currency: "BRL",
                                 }).format(Number(service.price))}
                             </p>
-                            <Sheet>
+                            <Sheet open={sheetIsOpen} onOpenChange={setSheetIsOpen}>
                                 <SheetTrigger asChild>
                                     <Button variant="secondary" className="mt-3 w-24" onClick={handleIsAuthenticated}>
                                         Reservar
@@ -66,6 +68,8 @@ const ServiceItem = ({ businessUnit, service, isAuthenticated }: ServiceItemProp
                                 <SideBookingComponent
                                     businessUnit={businessUnit}
                                     service={service}
+                                    sheetIsOpen={sheetIsOpen}
+                                    setSheetIsOpen={setSheetIsOpen}
                                 />
                             </Sheet>
                         </div>

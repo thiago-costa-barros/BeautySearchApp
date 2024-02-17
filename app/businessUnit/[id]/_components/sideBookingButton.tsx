@@ -19,14 +19,15 @@ import { saveBooking } from "../_actions/saveBooking";
 interface ServiceItemProps {
     businessUnit: BusinessUnit,
     service: Service,
+    sheetIsOpen: boolean,
+    setSheetIsOpen: (isOpen: boolean) => void
 }
 
-const SideBookingComponent = ({ businessUnit, service }: ServiceItemProps) => {
+const SideBookingComponent = ({ businessUnit, service, sheetIsOpen, setSheetIsOpen }: ServiceItemProps) => {
     const { data } = useSession();
     const [date, setDate] = useState<Date | undefined>(undefined)
     const [hour, setHour] = useState<string | undefined>()
-    const [submitIsLoading, setSubmitIsLoading] = useState(false)
-
+    const [submitIsLoading, setSubmitIsLoading] = useState(false)  
     const timeList = useMemo(() => {
         return date ? generateDayTimeList(date) : []
     }, [date])
@@ -60,6 +61,8 @@ const SideBookingComponent = ({ businessUnit, service }: ServiceItemProps) => {
                 initialValue: service.price,
                 principalValue: service.price,
             })
+
+            setSheetIsOpen(false)
         } catch (error) {
             console.error(error)
         }
