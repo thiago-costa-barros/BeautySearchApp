@@ -2,9 +2,11 @@
 
 import { Button } from "@/app/_components/ui/button";
 import { Card, CardContent } from "@/app/_components/ui/card";
+import { Sheet, SheetTrigger } from "@/app/_components/ui/sheet";
 import { Service } from "@prisma/client";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
+import SideBookingComponent from "./sideBookingButton";
 
 interface ServiceItemProps {
     service: Service,
@@ -54,9 +56,14 @@ const ServiceItem = ({ service, isAuthenticated }: ServiceItemProps) => {
                                     currency: "BRL",
                                 }).format(Number(service.price))}
                             </p>
-                            <Button variant="secondary" className="mt-3 w-24" onClick={handleIsAuthenticated}>
-                                Reservar
-                            </Button>
+                            <Sheet>
+                                <SheetTrigger asChild>
+                                    <Button variant="secondary" className="mt-3 w-24" onClick={handleIsAuthenticated}>
+                                        Reservar
+                                    </Button>
+                                </SheetTrigger>
+                                <SideBookingComponent/>
+                            </Sheet>
                         </div>
                     </div>
                 </div>

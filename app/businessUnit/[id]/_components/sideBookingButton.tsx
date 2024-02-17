@@ -2,8 +2,8 @@
 
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/app/_components/ui/sheet";
-import { CalendarDaysIcon, HomeIcon, MenuIcon} from "lucide-react";
+import { SheetContent, SheetHeader, SheetTitle } from "@/app/_components/ui/sheet";
+import { CalendarDaysIcon, HomeIcon } from "lucide-react";
 import { Button } from "@/app/_components/ui/button";
 import AuthItemComponent from "@/app/_components/auth_item";
 
@@ -12,12 +12,6 @@ const SideBookingComponent = () => {
     const { data } = useSession();
 
     return (
-        <Sheet>
-            <SheetTrigger asChild>
-                <Button variant="outline" size="icon" >
-                    <MenuIcon />
-                </Button>
-            </SheetTrigger>
             <SheetContent className="p-0">
                 <SheetHeader className="text-left border-b border-solid p-5">
                     <SheetTitle>
@@ -44,7 +38,6 @@ const SideBookingComponent = () => {
                     )}
                 </div>
             </SheetContent>
-        </Sheet>
     );
 }
 
