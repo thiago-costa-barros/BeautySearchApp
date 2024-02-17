@@ -7,13 +7,28 @@ import { CalendarDaysIcon, HomeIcon } from "lucide-react";
 import { Button } from "@/app/_components/ui/button";
 import AuthItemComponent from "@/app/_components/auth_item";
 import { Calendar } from "@/app/_components/ui/calendar";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { ptBR } from "date-fns/locale";
+import { generateDayTimeList } from "../_helpers/hours";
 
 
 const SideBookingComponent = () => {
     const { data } = useSession();
     const [date, setDate] = useState<Date | undefined>(new Date())
+    const [hour, setHour] = useState<string | undefined>()
+    const timeList = useMemo(() => {
+        return date ? generateDayTimeList(date) : []
+    }, [date])
+
+    const handleDateClick = (date : Date | undefined) => {
+        setDate(date);
+        setHour(undefined)
+    }
+
+    const handleHourClick = (time:string) => {
+        setHour(time)
+    }
+
     return (
         <SheetContent className="p-0">
             <SheetHeader className="text-left border-b border-solid p-5">
@@ -38,29 +53,44 @@ const SideBookingComponent = () => {
                 <Calendar
                     mode="single"
                     selected={date}
-                    onSelect={setDate}
-                    className="rounded-md border"
+                    onSelect={handleDateClick}
                     locale={ptBR}
+                    fromDate={new Date()}
                     styles={{
-                        head_cell:{
-                            width:"100%",
-                            textTransform:"capitalize",
+                        head_cell: {
+                            width: "100%",
+                            textTransform: "capitalize",
                         },
-                        cell:{
-                            width:"100%",
+                        cell: {
+                            width: "100%",
                         },
-                        nav_button_next:{
-                            width:"fit-content"
+                        nav_button_next: {
+                            width: "fit-content"
                         },
-                        nav_button_previous:{
-                            width:"fit-content"
+                        nav_button_previous: {
+                            width: "fit-content"
                         },
-                        caption:{
-                            textTransform:"capitalize"
+                        caption: {
+                            textTransform: "capitalize"
                         },
                     }}
                 />
             </div>
+            {date && (
+                <div className="flex overflow-x-auto [&::-webkit-scrollbar]:hidden gap-3 px-5 py-6 border-y boder-solid border-secondary">
+                    {timeList.map((time) => (
+                        <Button 
+                        variant={hour === time ? "default" : "outline"} 
+                        key={time} 
+                        className="rounded-full text-base font-bold" 
+                        onClick={() => handleHourClick(time)}
+                        >
+                            {time}
+                        </Button>
+
+                    ))}
+                </div>
+            )}
         </SheetContent>
     );
 }
