@@ -16,6 +16,7 @@ import { format } from "date-fns/format";
 import { setHours, setMinutes } from "date-fns";
 import { saveBooking } from "../_actions/saveBooking";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface ServiceItemProps {
     businessUnit: BusinessUnit,
@@ -25,6 +26,8 @@ interface ServiceItemProps {
 }
 
 const SideBookingComponent = ({ businessUnit, service, sheetIsOpen, setSheetIsOpen }: ServiceItemProps) => {
+    const router = useRouter();
+    
     const { data } = useSession();
     const [date, setDate] = useState<Date | undefined>(undefined)
     const [hour, setHour] = useState<string | undefined>()
@@ -64,13 +67,16 @@ const SideBookingComponent = ({ businessUnit, service, sheetIsOpen, setSheetIsOp
             })
 
             setSheetIsOpen(false)
+            setHour(undefined)
+            setDate(undefined)
+
             toast("Reserva realizada com sucesso!", {
                 description: format(newDate, "'Para' dd'/'MM'/'yy' às' HH':'mm'.'", {
                   locale: ptBR,
                 }),
                 action: {
                   label: "Visualizar",
-                  onClick: () => console.log("Visualizar"),
+                  onClick: () => router.push("/bookings"),
                 },
             })
         } catch (error) {
