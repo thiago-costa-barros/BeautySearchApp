@@ -15,6 +15,7 @@ import { BusinessUnit, Service } from "@prisma/client";
 import { format } from "date-fns/format";
 import { setHours, setMinutes } from "date-fns";
 import { saveBooking } from "../_actions/saveBooking";
+import { toast } from "sonner";
 
 interface ServiceItemProps {
     businessUnit: BusinessUnit,
@@ -63,6 +64,15 @@ const SideBookingComponent = ({ businessUnit, service, sheetIsOpen, setSheetIsOp
             })
 
             setSheetIsOpen(false)
+            toast("Reserva realizada com sucesso!", {
+                description: format(newDate, "'Para' dd'/'MM'/'yy' às' HH':'mm'.'", {
+                  locale: ptBR,
+                }),
+                action: {
+                  label: "Visualizar",
+                  onClick: () => console.log("Visualizar"),
+                },
+            })
         } catch (error) {
             console.error(error)
         }
