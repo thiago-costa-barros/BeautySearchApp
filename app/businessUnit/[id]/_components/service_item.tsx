@@ -3,17 +3,18 @@
 import { Button } from "@/app/_components/ui/button";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { Sheet, SheetTrigger } from "@/app/_components/ui/sheet";
-import { Service } from "@prisma/client";
+import {  BusinessUnit, Service } from "@prisma/client";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import SideBookingComponent from "./sideBookingButton";
 
 interface ServiceItemProps {
+    businessUnit: BusinessUnit,
     service: Service,
     isAuthenticated: boolean;
 }
 
-const ServiceItem = ({ service, isAuthenticated }: ServiceItemProps) => {
+const ServiceItem = ({ businessUnit, service, isAuthenticated }: ServiceItemProps) => {
 
     const handleIsAuthenticated = () => {
         if (!isAuthenticated) {
@@ -62,7 +63,10 @@ const ServiceItem = ({ service, isAuthenticated }: ServiceItemProps) => {
                                         Reservar
                                     </Button>
                                 </SheetTrigger>
-                                <SideBookingComponent/>
+                                <SideBookingComponent
+                                    businessUnit={businessUnit}
+                                    service={service}
+                                />
                             </Sheet>
                         </div>
                     </div>

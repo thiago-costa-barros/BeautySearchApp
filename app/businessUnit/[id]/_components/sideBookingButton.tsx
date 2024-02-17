@@ -10,9 +10,16 @@ import { Calendar } from "@/app/_components/ui/calendar";
 import { useMemo, useState } from "react";
 import { ptBR } from "date-fns/locale";
 import { generateDayTimeList } from "../_helpers/hours";
+import { Card, CardContent } from "@/app/_components/ui/card";
+import { BusinessUnit, Service } from "@prisma/client";
+import { format } from "date-fns/format";
 
+interface ServiceItemProps {
+    businessUnit: BusinessUnit,
+    service: Service,
+}
 
-const SideBookingComponent = () => {
+const SideBookingComponent = ({ businessUnit, service }: ServiceItemProps) => {
     const { data } = useSession();
     const [date, setDate] = useState<Date | undefined>(new Date())
     const [hour, setHour] = useState<string | undefined>()
@@ -20,12 +27,12 @@ const SideBookingComponent = () => {
         return date ? generateDayTimeList(date) : []
     }, [date])
 
-    const handleDateClick = (date : Date | undefined) => {
+    const handleDateClick = (date: Date | undefined) => {
         setDate(date);
         setHour(undefined)
     }
 
-    const handleHourClick = (time:string) => {
+    const handleHourClick = (time: string) => {
         setHour(time)
     }
 
@@ -79,18 +86,63 @@ const SideBookingComponent = () => {
             {date && (
                 <div className="flex overflow-x-auto [&::-webkit-scrollbar]:hidden gap-3 px-5 py-6 border-y boder-solid border-secondary">
                     {timeList.map((time) => (
-                        <Button 
-                        variant={hour === time ? "default" : "outline"} 
-                        key={time} 
-                        className="rounded-full text-base font-bold" 
-                        onClick={() => handleHourClick(time)}
+                        <Button
+                            variant={hour === time ? "default" : "outline"}
+                            key={time}
+                            className="rounded-full text-base font-bold"
+                            onClick={() => handleHourClick(time)}
                         >
                             {time}
                         </Button>
-
                     ))}
                 </div>
             )}
+            <div className="py-5 px-5 mt-4">
+                <Card>
+                    <CardContent className="flex flex-col p-3 gap-y-2">
+                        <div className="flex justify-between">
+                            <h2 className="font-bold">
+                                {service.name}
+                            </h2>
+                            <h2 className="font-bold">
+                                {Intl.NumberFormat(
+                                    "pt-BR", {
+                                    style: "currency",
+                                    currency: "BRL",
+                                }).format(Number(service.price))}
+                            </h2>
+                        </div>
+                        {date && (
+                            <div className="flex justify-between">
+                                <h3 className="text-gray-400 text-sm">
+                                    Data
+                                </h3>
+                                <h3 className="text-sm">
+                                    {format(date, "dd'/'MM'/'yy")}
+                                </h3>
+                            </div>
+                        )}
+                        {hour && (
+                            <div className="flex justify-between">
+                                <h3 className="text-gray-400 text-sm">
+                                    Horário
+                                </h3>
+                                <h3 className="text-sm">
+                                    {hour}
+                                </h3>
+                            </div>
+                        )}
+                        <div className="flex justify-between">
+                            <h3 className="text-gray-400 text-sm">
+                                Estabelecimento
+                            </h3>
+                            <h3 className="text-sm">
+                                {businessUnit.name}
+                            </h3>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
         </SheetContent>
     );
 }
