@@ -74,11 +74,12 @@ model Booking {
   service               Service      @relation(fields: [serviceId], references: [id])
   initialValue          Decimal      @db.Decimal(10, 2)
   principalValue        Decimal      @db.Decimal(10, 2)
-  wasConsolidatedCoupon Boolean
+  date                  DateTime
+  wasConsolidatedCoupon Boolean?
   couponId              Int?
   coupon                Coupon?      @relation(fields: [couponId], references: [id])
   creationDate          DateTime     @default(now())
-  cpdateDate            DateTime?    @updatedAt
+  updateDate            DateTime?    @updatedAt
 }
 
 model Coupon {
