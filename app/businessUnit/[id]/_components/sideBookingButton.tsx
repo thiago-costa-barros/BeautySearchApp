@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { SheetContent, SheetFooter, SheetHeader, SheetTitle } from "@/app/_components/ui/sheet";
-import { CalendarDaysIcon, HomeIcon } from "lucide-react";
+import { CalendarDaysIcon } from "lucide-react";
 import { Button } from "@/app/_components/ui/button";
 import AuthItemComponent from "@/app/_components/auth_item";
 import { Calendar } from "@/app/_components/ui/calendar";
@@ -13,6 +13,8 @@ import { generateDayTimeList } from "../_helpers/hours";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { BusinessUnit, Service } from "@prisma/client";
 import { format } from "date-fns/format";
+import { setHours, setMinutes } from "date-fns";
+import { saveBooking } from "../_actions/saveBooking";
 
 interface ServiceItemProps {
     businessUnit: BusinessUnit,
@@ -34,6 +36,30 @@ const SideBookingComponent = ({ businessUnit, service }: ServiceItemProps) => {
 
     const handleHourClick = (time: string | undefined) => {
         setHour(prevHour => prevHour === time ? undefined : time);
+    }
+
+    const handleBookingSubmit = async () => {
+        try {
+            if (!hour || !date || !data?.user) {
+                return;
+            }
+            
+            const dateHour = Number(hour.split(':')[0])
+            const dateMinute = Number(hour.split(':')[1])
+
+            const newDate = setMinutes(setHours(date, dateHour), dateMinute);
+
+            await saveBooking({
+                serviceId: service.id,
+                businessUnitId: businessUnit.id,
+                date: newDate,
+                userId: (data?.user as any).id,
+                initialValue: service.price,
+                principalValue: service.price,
+            })
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     return (
@@ -145,11 +171,14 @@ const SideBookingComponent = ({ businessUnit, service }: ServiceItemProps) => {
                     </Card>
                 )}
             </div>
-                <SheetFooter className="px-5">
-                    <Button disabled={!hour || !date}>
-                        CONFIRMAR
-                    </Button>
-                </SheetFooter>
+            <SheetFooter className="px-5">
+                <Button
+                    disabled={!hour || !date}
+                    onClick={handleBookingSubmit}
+                >
+                    CONFIRMAR
+                </Button>
+            </SheetFooter>
         </SheetContent>
     );//TODO: acrescentar input para cupom
 }
