@@ -9,14 +9,14 @@ import { CalendarDaysIcon, HomeIcon, LogInIcon, LogOutIcon, MenuIcon, UserIcon }
 import { Button } from "./ui/button";
 
 const SideMenuComponent = () => {
-    const { data, status } = useSession();
+    const { data } = useSession();
 
     const handleLogInClick = () => signIn("google");
     const handleLogOutClick = () => signOut();
 
     return (
         <Sheet>
-            <SheetTrigger>
+            <SheetTrigger asChild>
                 <Button variant="outline" size="icon" >
                     <MenuIcon />
                 </Button>
@@ -24,7 +24,9 @@ const SideMenuComponent = () => {
             <SheetContent className="p-0">
                 <SheetHeader className="text-left border-b border-solid p-5">
                     <SheetTitle>
-                        Menu
+                        <h2 className="font-bold">
+                            Menu
+                        </h2>
                     </SheetTitle>
                 </SheetHeader>
                 {data?.user ? (
@@ -65,7 +67,7 @@ const SideMenuComponent = () => {
                         </Link>
                     </Button>
                     {data?.user && (
-                        <Button variant="outline" className="justify-start"asChild>
+                        <Button variant="outline" className="justify-start" asChild>
                             <Link href="/bookings">
                                 <CalendarDaysIcon className="mr-2" size={18} />
                                 Agendamentos
