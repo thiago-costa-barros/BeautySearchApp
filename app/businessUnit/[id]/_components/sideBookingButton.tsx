@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { SheetContent, SheetFooter, SheetHeader, SheetTitle } from "@/app/_components/ui/sheet";
-import { CalendarDaysIcon } from "lucide-react";
+import { CalendarDaysIcon, Loader2 } from "lucide-react";
 import { Button } from "@/app/_components/ui/button";
 import AuthItemComponent from "@/app/_components/auth_item";
 import { Calendar } from "@/app/_components/ui/calendar";
@@ -25,6 +25,8 @@ const SideBookingComponent = ({ businessUnit, service }: ServiceItemProps) => {
     const { data } = useSession();
     const [date, setDate] = useState<Date | undefined>(undefined)
     const [hour, setHour] = useState<string | undefined>()
+    const [submitIsLoading, setSubmitIsLoading] = useState(false)
+
     const timeList = useMemo(() => {
         return date ? generateDayTimeList(date) : []
     }, [date])
@@ -39,11 +41,12 @@ const SideBookingComponent = ({ businessUnit, service }: ServiceItemProps) => {
     }
 
     const handleBookingSubmit = async () => {
+        setSubmitIsLoading(true)
         try {
             if (!hour || !date || !data?.user) {
                 return;
             }
-            
+
             const dateHour = Number(hour.split(':')[0])
             const dateMinute = Number(hour.split(':')[1])
 
@@ -59,6 +62,9 @@ const SideBookingComponent = ({ businessUnit, service }: ServiceItemProps) => {
             })
         } catch (error) {
             console.error(error)
+        }
+        finally {
+            setSubmitIsLoading(false)
         }
     }
 
@@ -173,10 +179,17 @@ const SideBookingComponent = ({ businessUnit, service }: ServiceItemProps) => {
             </div>
             <SheetFooter className="px-5">
                 <Button
-                    disabled={!hour || !date}
+                    disabled={(!hour || !date) || submitIsLoading}
                     onClick={handleBookingSubmit}
                 >
-                    CONFIRMAR
+                    {submitIsLoading ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            SALVANDO AGENDAMENTO...
+                        </>
+                    ) : (
+                        'CONFIRMAR'
+                    )}
                 </Button>
             </SheetFooter>
         </SheetContent>
