@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { SheetContent, SheetHeader, SheetTitle } from "@/app/_components/ui/sheet";
+import { SheetContent, SheetFooter, SheetHeader, SheetTitle } from "@/app/_components/ui/sheet";
 import { CalendarDaysIcon, HomeIcon } from "lucide-react";
 import { Button } from "@/app/_components/ui/button";
 import AuthItemComponent from "@/app/_components/auth_item";
@@ -32,8 +32,8 @@ const SideBookingComponent = ({ businessUnit, service }: ServiceItemProps) => {
         setHour(undefined)
     }
 
-    const handleHourClick = (time: string) => {
-        setHour(time)
+    const handleHourClick = (time: string | undefined) => {
+        setHour(prevHour => prevHour === time ? undefined : time);
     }
 
     return (
@@ -98,51 +98,60 @@ const SideBookingComponent = ({ businessUnit, service }: ServiceItemProps) => {
                 </div>
             )}
             <div className="py-5 px-5 mt-4">
-                <Card>
-                    <CardContent className="flex flex-col p-3 gap-y-2">
-                        <div className="flex justify-between">
-                            <h2 className="font-bold">
-                                {service.name}
-                            </h2>
-                            <h2 className="font-bold">
-                                {Intl.NumberFormat(
-                                    "pt-BR", {
-                                    style: "currency",
-                                    currency: "BRL",
-                                }).format(Number(service.price))}
-                            </h2>
-                        </div>
-                        {date && (
+                {hour && (
+                    <Card>
+                        <CardContent className="flex flex-col p-3 gap-3">
+                            <div className="flex justify-between">
+                                <h2 className="font-bold">
+                                    {service.name}
+                                </h2>
+                                <h2 className="font-bold">
+                                    {Intl.NumberFormat(
+                                        "pt-BR", {
+                                        style: "currency",
+                                        currency: "BRL",
+                                    }).format(Number(service.price))}
+                                </h2>
+                            </div>
+                            {date && (
+                                <div className="flex justify-between">
+                                    <h3 className="text-gray-400 text-sm">
+                                        Data
+                                    </h3>
+                                    <h3 className="text-sm">
+                                        {format(date, "dd'/'MM'/'yy")}
+                                    </h3>
+                                </div>
+                            )}
+                            {hour && (
+                                <div className="flex justify-between">
+                                    <h3 className="text-gray-400 text-sm">
+                                        Horário
+                                    </h3>
+                                    <h3 className="text-sm">
+                                        {hour}
+                                    </h3>
+                                </div>
+                            )}
                             <div className="flex justify-between">
                                 <h3 className="text-gray-400 text-sm">
-                                    Data
+                                    Estabelecimento
                                 </h3>
                                 <h3 className="text-sm">
-                                    {format(date, "dd'/'MM'/'yy")}
+                                    {businessUnit.name}
                                 </h3>
                             </div>
-                        )}
-                        {hour && (
-                            <div className="flex justify-between">
-                                <h3 className="text-gray-400 text-sm">
-                                    Horário
-                                </h3>
-                                <h3 className="text-sm">
-                                    {hour}
-                                </h3>
-                            </div>
-                        )}
-                        <div className="flex justify-between">
-                            <h3 className="text-gray-400 text-sm">
-                                Estabelecimento
-                            </h3>
-                            <h3 className="text-sm">
-                                {businessUnit.name}
-                            </h3>
-                        </div>
-                    </CardContent>
-                </Card>
+                        </CardContent>
+                    </Card>
+                )}
             </div>
+            {hour && (
+                <SheetFooter className="px-5">
+                    <Button>
+                        CONFIRMAR
+                    </Button>
+                </SheetFooter>
+            )}
         </SheetContent>
     );
 }
