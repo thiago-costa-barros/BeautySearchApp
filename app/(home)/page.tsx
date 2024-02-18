@@ -14,12 +14,17 @@ import Link from "next/link";
 
 export default async function Home() {
   const session = await getServerSession(authOptions)
-  const currentDate = new Date();
   const bookings = session?.user ? await db.booking.findMany({
     where: {
       AND: [
-        { userId: (session.user as any).id },
-        { date: { gte: currentDate } } // Filtrar para data maior ou igual à data atual
+        {
+          userId: (session.user as any).id
+        },
+        {
+          date: {
+            gte: new Date()
+          }
+        } // Filtrar para data maior ou igual à data atual
       ]
     },
     include: {
@@ -83,12 +88,10 @@ export default async function Home() {
             )}
           </>
         ) : (
-          <></>
+          <>
+            
+          </>
         )}
-        {/* <h2 className="mb-3 font-bold text-sm text-gray-400 uppercase">
-          AGENDAMENTOS
-        </h2>
-        <BookingItem booking={booking} /> */}
       </div>
       <div className="px-5 mt-6">
         <h2 className=" mb-3 font-bold text-sm text-gray-400 uppercase">

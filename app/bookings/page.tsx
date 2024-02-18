@@ -14,10 +14,12 @@ const BookingsPage = async () => {
     if (!session) {
         return redirect('/')
     }
-
-    const bookings = await db.booking.findMany({
+    const confirmedBookings = await db.booking.findMany({
         where: {
             userId: (session.user as any).id,
+            date : {
+                gte : new Date()
+            }
         },
         include: {
             service: true,
@@ -27,9 +29,21 @@ const BookingsPage = async () => {
             date: 'asc', // ou 'desc' para ordem decrescente
           },
     });
-
-    const confirmedBookings     = bookings.filter((booking) => isFuture(booking.date))
-    const finishedBookings      = bookings.filter((booking) => isPast(booking.date))
+    const finishedBookings = await db.booking.findMany({
+        where: {
+            userId: (session.user as any).id,
+            date : {
+                lt : new Date()
+            }
+        },
+        include: {
+            service: true,
+            businessUnit: true,
+        },
+        orderBy: {
+            date: 'asc', // ou 'desc' para ordem decrescente
+          },
+    });
     return (
         <div>
             <Header />
