@@ -14,43 +14,43 @@ import Link from "next/link";
 
 export default async function Home() {
   const session = await getServerSession(authOptions)
-  const bookings = session?.user ? await db.booking.findMany({
-    where: {
-      AND: [
-        {
-          userId: (session.user as any).id
-        },
-        {
-          date: {
-            gte: new Date()
-          }
-        } // Filtrar para data maior ou igual à data atual
-      ]
-    },
-    include: {
-      service: true,
-      businessUnit: true,
-    },
-    orderBy: {
-      date: 'asc', // ou 'desc' para ordem decrescente
-    },
-    take: 3,
-  }) : [];
-
-  const nextBooking = bookings.filter((booking) => isFuture(booking.date))
-
-  const businessUnits = await db.businessUnit.findMany({
-    orderBy: {
-      creationDate: 'desc'
-    },
-    take: 10
-  });
-  const businessUnitsAvgOrderBy = await db.businessUnit.findMany({
-    orderBy: {
-      avgRating: 'desc' // Ordenar por AvgRating em ordem decrescente
-    },
-    take: 5 // Limitar o resultado aos top 5
-  });
+  
+  const [bookings, businessUnits, businessUnitsAvgOrderBy] = await Promise.all([
+    session?.user ? db.booking.findMany({
+      where: {
+        AND: [
+          {
+            userId: (session.user as any).id
+          },
+          {
+            date: {
+              gte: new Date()
+            }
+          } // Filtrar para data maior ou igual à data atual
+        ]
+      },
+      include: {
+        service: true,
+        businessUnit: true,
+      },
+      orderBy: {
+        date: 'asc', // ou 'desc' para ordem decrescente
+      },
+      take: 3,
+    }) : [],
+    db.businessUnit.findMany({
+      orderBy: {
+        creationDate: 'desc'
+      },
+      take: 10
+    }),
+    db.businessUnit.findMany({
+      orderBy: {
+        avgRating: 'desc' // Ordenar por AvgRating em ordem decrescente
+      },
+      take: 5 // Limitar o resultado aos top 5
+    })
+  ])
   return (
     <div>
       <Header />
@@ -81,7 +81,7 @@ export default async function Home() {
               </div>
             ) : (
               <div className="flex flex-col gap-4">
-                {nextBooking.map((booking) => (
+                {bookings.map((booking) => (
                   <BookingItem key={booking.id} booking={booking} />
                 ))}
               </div>
@@ -89,7 +89,7 @@ export default async function Home() {
           </>
         ) : (
           <>
-            
+
           </>
         )}
       </div>
