@@ -33,7 +33,8 @@ const BusinessUnitItem = ({ businessUnit }: BusinessUnitItemProps) => {
                         </Badge>
                     </div>
                     {businessUnit.imageUrl && (
-                        <Image
+                        <Image 
+                            className="rounded-2xl"
                             src={businessUnit.imageUrl}
                             alt={businessUnit.name}
                             fill
