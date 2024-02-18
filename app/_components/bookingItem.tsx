@@ -20,8 +20,8 @@ const BookingItem = ({ booking }: BookingItemProps) => {
 
     return (
         <Card >
-            <CardContent className="flex px-3 pb-0 py-3 items-center" >
-                <div className="flex flex-col gap-2 flex-[3]">
+            <CardContent className="flex px-3 py-0 items-center" >
+                <div className="flex flex-col gap-2 py-3 flex-[3]">
                     <Badge className="bg-slate-800 text-slate-300 hover:bg-slate-800 w-fit">
                         Confirmado
                     </Badge>
@@ -31,7 +31,7 @@ const BookingItem = ({ booking }: BookingItemProps) => {
                     <div className="flex items-center gap-2">
                         {booking.businessUnit.imageUrl && (<Avatar className="h-6 w-6">
                             <AvatarImage src={booking.businessUnit.imageUrl} />
-                            <AvatarFallback>A</AvatarFallback>
+                            <AvatarFallback>{booking.businessUnit.name}</AvatarFallback>
                         </Avatar>
                         )}
                         <h3 className="text-sm">
@@ -39,15 +39,15 @@ const BookingItem = ({ booking }: BookingItemProps) => {
                         </h3>
                     </div>
                 </div>
-                <div className="flex flex-col items-center flex-1 border-l-2 border-solid">
+                <div className="flex flex-col py-3 items-center flex-1 border-l-2 border-solid">
                     <p className="text-sm font-semibold capitalize">
                         {format(booking.date, 'MMMM', {locale: ptBR})}
                     </p>
                     <p className="text-2xl font-bold">
-                    {format(booking.date, 'dd', {locale: ptBR})}
+                    {format(booking.date, 'dd')}
                     </p>
                     <p className="text-sm font-semibold">
-                    {format(booking.date, 'hh:mm', {locale: ptBR})}
+                    {format(booking.date, 'HH:mm')}
                     </p>
                 </div>
             </CardContent>

@@ -21,7 +21,10 @@ const BookingsPage = async () => {
         include: {
             service: true,
             businessUnit: true,
-        }
+        },
+        orderBy: {
+            date: 'asc', // ou 'desc' para ordem decrescente
+          },
     });
 
     return (
