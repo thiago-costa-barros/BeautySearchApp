@@ -30,10 +30,10 @@ export default async function Home(booking : any) {
         <Search />
       </div>
       <div className="px-5 mt-6">
-        <h2 className="mb-3 font-bold text-sm text-gray-400 uppercase">
+        {/* <h2 className="mb-3 font-bold text-sm text-gray-400 uppercase">
           AGENDAMENTOS
         </h2>
-        <BookingItem booking={booking} />
+        <BookingItem booking={booking} /> */}
       </div>
       <div className="mt-6">
         <h2 className="px-5 mb-3 font-bold text-sm text-gray-400 uppercase">

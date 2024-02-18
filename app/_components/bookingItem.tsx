@@ -11,7 +11,7 @@ interface BookingItemProps {
         include: {
             service: true,
             businessUnit: true,
-        };
+        },
     }>;
 };
 
@@ -19,9 +19,9 @@ const BookingItem = ({ booking }: BookingItemProps) => {
 
 
     return (
-        <Card className="flex items-center justify-between">
-            <CardContent className="p-5" >
-                <div className="flex flex-col gap-2">
+        <Card >
+            <CardContent className="flex px-3 pb-0 py-3 items-center" >
+                <div className="flex flex-col gap-2 flex-[3]">
                     <Badge className="bg-slate-800 text-slate-300 hover:bg-slate-800 w-fit">
                         Confirmado
                     </Badge>
@@ -39,9 +39,7 @@ const BookingItem = ({ booking }: BookingItemProps) => {
                         </h3>
                     </div>
                 </div>
-            </CardContent>
-            <CardContent className="p-5">
-                <div className="p-5 flex flex-col items-center justify-center px-3 border-l-2 border-solid ">
+                <div className="flex flex-col items-center flex-1 border-l-2 border-solid">
                     <p className="text-sm font-semibold capitalize">
                         {format(booking.date, 'MMMM', {locale: ptBR})}
                     </p>
