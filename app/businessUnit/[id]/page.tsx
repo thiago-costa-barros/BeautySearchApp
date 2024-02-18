@@ -1,6 +1,6 @@
 import { db } from "@/app/_lib/prisma";
-import BusinessUnitInfos from "./_components/businessUnit_infos";
-import ServiceItem from "./_components/service_item";
+import BusinessUnitInfos from "./_components/businessUnitInfos";
+import ServiceItem from "./_components/serviceItem";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 

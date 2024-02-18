@@ -1,7 +1,7 @@
 
 
 import { getServerSession } from "next-auth";
-import BookingItem from "../_components/booking_item";
+import BookingItem from "../_components/bookingItem";
 import Header from "../_components/header";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";

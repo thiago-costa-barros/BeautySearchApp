@@ -1,5 +1,5 @@
-import BookingItem from "../_components/booking_item";
-import BusinessUnitItem from "../_components/businessUnit_item";
+import BookingItem from "../_components/bookingItem";
+import BusinessUnitItem from "../_components/businessUnitItem";
 import Header from "../_components/header";
 import Search from "./_components/search";
 import Welcome from "./_components/welcome";
