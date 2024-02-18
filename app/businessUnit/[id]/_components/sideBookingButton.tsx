@@ -7,16 +7,17 @@ import { CalendarDaysIcon, Loader2 } from "lucide-react";
 import { Button } from "@/app/_components/ui/button";
 import AuthItemComponent from "@/app/_components/auth_item";
 import { Calendar } from "@/app/_components/ui/calendar";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ptBR } from "date-fns/locale";
 import { generateDayTimeList } from "../_helpers/hours";
 import { Card, CardContent } from "@/app/_components/ui/card";
-import { BusinessUnit, Service } from "@prisma/client";
+import { Booking, BusinessUnit, Service } from "@prisma/client";
 import { format } from "date-fns/format";
 import { setHours, setMinutes } from "date-fns";
 import { saveBooking } from "../_actions/saveBooking";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { getDateBookings } from "../_actions/getDateBookings";
 
 interface ServiceItemProps {
     businessUnit: BusinessUnit,
@@ -27,14 +28,51 @@ interface ServiceItemProps {
 
 const SideBookingComponent = ({ businessUnit, service, sheetIsOpen, setSheetIsOpen }: ServiceItemProps) => {
     const router = useRouter();
-    
+
     const { data } = useSession();
     const [date, setDate] = useState<Date | undefined>(undefined)
     const [hour, setHour] = useState<string | undefined>()
-    const [submitIsLoading, setSubmitIsLoading] = useState(false)  
+    const [submitIsLoading, setSubmitIsLoading] = useState(false)
+    const [dayBookings, setDayBookings] = useState<Booking[]>([])
+
+    console.log(dayBookings)
+    useEffect(() => {
+        if (!date) {
+            return
+        }
+
+        const refreshAvailableHours = async () => {
+            const allDayBookings = await getDateBookings(date);
+            setDayBookings(allDayBookings)
+        }
+
+        refreshAvailableHours();
+    }, [date]);
+
+
+
     const timeList = useMemo(() => {
-        return date ? generateDayTimeList(date) : []
-    }, [date])
+        if (!date) {
+            return []
+        }
+
+        return generateDayTimeList(date).filter(time => {
+            const timeHour = Number(time.split(':')[0])
+            const timeMinute = Number(time.split(':')[1])
+
+            const booking = dayBookings.find(booking => {
+                const bookingHour = booking.date.getHours();
+                const bookingMinute = booking.date.getMinutes()
+
+                return bookingHour === timeHour && bookingMinute === timeMinute
+            })
+
+            if (!booking) {
+                return true
+            }
+            return false
+        })
+    }, [date, dayBookings])
 
     const handleDateClick = (date: Date | undefined) => {
         setDate(date);
@@ -72,11 +110,11 @@ const SideBookingComponent = ({ businessUnit, service, sheetIsOpen, setSheetIsOp
 
             toast("Reserva realizada com sucesso!", {
                 description: format(newDate, "'Para' dd'/'MM'/'yy' às' HH':'mm'.'", {
-                  locale: ptBR,
+                    locale: ptBR,
                 }),
                 action: {
-                  label: "Visualizar",
-                  onClick: () => router.push("/bookings"),
+                    label: "Visualizar",
+                    onClick: () => router.push("/bookings"),
                 },
             })
         } catch (error) {
@@ -136,16 +174,22 @@ const SideBookingComponent = ({ businessUnit, service, sheetIsOpen, setSheetIsOp
             </div>
             {date && (
                 <div className="flex overflow-x-auto [&::-webkit-scrollbar]:hidden gap-3 px-5 py-6 border-y boder-solid border-secondary">
-                    {timeList.map((time) => (
-                        <Button
-                            variant={hour === time ? "default" : "outline"}
-                            key={time}
-                            className="rounded-full text-base font-bold"
-                            onClick={() => handleHourClick(time)}
-                        >
-                            {time}
-                        </Button>
-                    ))}
+                    {timeList.length === 0 ? (
+                        <p className="font-bold text-gray-400">Não há horários disponíveis para esta data.</p>
+                    ) : (
+                        <div>
+                            {timeList.map((time) => (
+                                <Button
+                                    variant={hour === time ? "default" : "outline"}
+                                    key={time}
+                                    className="rounded-full text-base font-bold"
+                                    onClick={() => handleHourClick(time)}
+                                >
+                                    {time}
+                                </Button>
+                            ))}
+                        </div>
+                    )}
                 </div>
             )}
             <div className="py-5 px-5 mt-4">
