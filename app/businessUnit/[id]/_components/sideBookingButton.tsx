@@ -5,7 +5,7 @@ import Link from "next/link";
 import { SheetContent, SheetFooter, SheetHeader, SheetTitle } from "@/app/_components/ui/sheet";
 import { CalendarDaysIcon, Loader2 } from "lucide-react";
 import { Button } from "@/app/_components/ui/button";
-import AuthItemComponent from "@/app/_components/auth_item";
+import AuthItemComponent from "@/app/_components/authItem";
 import { Calendar } from "@/app/_components/ui/calendar";
 import { useEffect, useMemo, useState } from "react";
 import { ptBR } from "date-fns/locale";

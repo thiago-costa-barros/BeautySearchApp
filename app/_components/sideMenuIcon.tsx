@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
 import { CalendarDaysIcon, HomeIcon, MenuIcon } from "lucide-react";
 import { Button } from "./ui/button";
-import AuthItemComponent from "./auth_item";
+import AuthItemComponent from "./authItem";
 
 const SideMenuComponent = () => {
     const { data } = useSession();
