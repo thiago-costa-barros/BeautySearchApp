@@ -35,19 +35,18 @@ const SideBookingComponent = ({ businessUnit, service, sheetIsOpen, setSheetIsOp
     const [submitIsLoading, setSubmitIsLoading] = useState(false)
     const [dayBookings, setDayBookings] = useState<Booking[]>([])
 
-    console.log(dayBookings)
     useEffect(() => {
         if (!date) {
             return
         }
 
         const refreshAvailableHours = async () => {
-            const allDayBookings = await getDateBookings(date);
+            const allDayBookings = await getDateBookings(businessUnit.id, date);
             setDayBookings(allDayBookings)
         }
 
         refreshAvailableHours();
-    }, [date]);
+    }, [date, businessUnit.id]);
 
 
 
@@ -177,7 +176,7 @@ const SideBookingComponent = ({ businessUnit, service, sheetIsOpen, setSheetIsOp
                     {timeList.length === 0 ? (
                         <p className="font-bold text-gray-400">Não há horários disponíveis para esta data.</p>
                     ) : (
-                        <div>
+                        <div className="flex overflow-x-auto [&::-webkit-scrollbar]:hidden gap-3 ">
                             {timeList.map((time) => (
                                 <Button
                                     variant={hour === time ? "default" : "outline"}
