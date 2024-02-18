@@ -18,6 +18,10 @@ const BookingsPage = async () => {
         where: {
             userId : (session.user as any).id,
         },
+        include : {
+            service : true,
+            businessUnit: true,
+        }
     });
 
     return (
@@ -33,14 +37,14 @@ const BookingsPage = async () => {
                     CONFIRMADOS
                 </h2>
                 {bookings.map((booking) =>
-                    <BookingItem key={booking.id}/>
+                    <BookingItem key={booking.id} booking={booking}/>
                 )}
             </div>
             <div className="flex flex-col gap-3 px-5 mt-6">
                 <h2 className="mb-3 font-bold text-sm text-gray-400 uppercase">
                     FINALIZADOS
                 </h2>
-                <BookingItem />
+                
             </div>
         </div>
     );

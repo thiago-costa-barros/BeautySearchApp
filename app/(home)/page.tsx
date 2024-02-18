@@ -6,7 +6,7 @@ import Welcome from "./_components/welcome";
 import { db } from "../_lib/prisma";
 
 
-export default async function Home() {
+export default async function Home(booking : any) {
 
   const businessUnits = await db.businessUnit.findMany({
     orderBy: {
@@ -33,7 +33,7 @@ export default async function Home() {
         <h2 className="mb-3 font-bold text-sm text-gray-400 uppercase">
           AGENDAMENTOS
         </h2>
-        <BookingItem />
+        <BookingItem booking={booking} />
       </div>
       <div className="mt-6">
         <h2 className="px-5 mb-3 font-bold text-sm text-gray-400 uppercase">
