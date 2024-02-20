@@ -3,7 +3,10 @@ import { Badge } from "./ui/badge";
 import { Card, CardContent } from "./ui/card"
 import { ptBR } from "date-fns/locale";
 import { format, isFuture } from "date-fns"
-import { Booking, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
+import { Button } from "./ui/button";
+import { Sheet, SheetTrigger } from "./ui/sheet";
+import BookingDetails from "./bookingDetails";
 
 
 interface BookingItemProps {
@@ -34,20 +37,32 @@ const BookingItem = ({ booking }: BookingItemProps) => {
                             <AvatarFallback>{booking.businessUnit.name}</AvatarFallback>
                         </Avatar>
                         )}
-                        <h3 className="text-sm">
-                            {booking.businessUnit.name}
-                        </h3>
+                        <div className="flex justify-between items-center w-full">
+                            <h3 className="text-sm">
+                                {booking.businessUnit.name}
+                            </h3>
+                            <div className="flex justify-end px-2">
+                                <Sheet>
+                                    <SheetTrigger>
+                                        <Button variant="outline" className="w-fit rounded-2xl text-xs h-fit bg-secondary hover:bg-slate-600">
+                                            Detalhes
+                                        </Button>
+                                    </SheetTrigger>
+                                    <BookingDetails booking={booking} />
+                                </Sheet>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="flex flex-col py-3 items-center flex-1 border-l-2 border-solid">
                     <p className="text-sm font-semibold capitalize">
-                        {format(booking.date, 'MMMM', {locale: ptBR})}
+                        {format(booking.date, 'MMMM', { locale: ptBR })}
                     </p>
                     <p className="text-2xl font-bold">
-                    {format(booking.date, 'dd')}
+                        {format(booking.date, 'dd')}
                     </p>
                     <p className="text-sm font-semibold">
-                    {format(booking.date, 'HH:mm')}
+                        {format(booking.date, 'HH:mm')}
                     </p>
                 </div>
             </CardContent>
