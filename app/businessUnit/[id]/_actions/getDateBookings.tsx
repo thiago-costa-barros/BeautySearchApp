@@ -2,6 +2,7 @@
 
 import { db } from "@/app/_lib/prisma"
 import { endOfDay, startOfDay } from "date-fns"
+import { revalidatePath } from "next/cache";
 
 export const getDateBookings = async (businessUnitId: number, date: Date) => {
     const bookings = await db.booking.findMany({
@@ -13,5 +14,6 @@ export const getDateBookings = async (businessUnitId: number, date: Date) => {
             },
         },
     });
+    revalidatePath("/bookings")
     return bookings;
 };
