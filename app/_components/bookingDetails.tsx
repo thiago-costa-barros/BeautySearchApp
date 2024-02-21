@@ -1,3 +1,4 @@
+"use client";
 
 import { Prisma } from "@prisma/client";
 import { Card, CardContent } from "./ui/card";
@@ -8,6 +9,10 @@ import { Avatar, AvatarImage } from "./ui/avatar";
 import { isFuture } from "date-fns";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
+import { cancelBooking } from "../_actions/cancelBooking";
+import { toast } from "sonner";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 interface BookingDetailsProps {
     booking: Prisma.BookingGetPayload<{
@@ -16,10 +21,32 @@ interface BookingDetailsProps {
             businessUnit: true,
         },
     }>;
+    sheetIsOpen: boolean,
+    setSheetIsOpen: (isOpen: boolean) => void,
 };
 
-const BookingDetails = ({ booking }: BookingDetailsProps) => {
-    const isConfirmedBooking = isFuture(booking.date)
+const BookingDetails = ({ booking, sheetIsOpen, setSheetIsOpen }: BookingDetailsProps) => {
+
+    const [isDeleteIsLoading, SetIsDeleteIsLoading] = useState(false);
+
+    const isConfirmedBooking = isFuture(booking.date);
+
+    const handleCancelBooking = async () => {
+        SetIsDeleteIsLoading(true)
+        try {
+            await cancelBooking(booking.id)
+
+            toast.success("Agendamento Cancelado com sucesso!")
+
+            setSheetIsOpen(false)
+        } catch (error) {
+            console.error(error)
+        } finally {
+            SetIsDeleteIsLoading(false)
+        }
+    };
+
+
     return (
         <SheetContent>
             <SheetHeader className="text-left border-b border-solid py-5">
@@ -31,51 +58,51 @@ const BookingDetails = ({ booking }: BookingDetailsProps) => {
             </SheetHeader>
             <div className="flex flex-col mt-3 gap-4">
                 <div className="">
-                <Badge variant={isConfirmedBooking ? 'default' : 'secondary'} className="w-fit">
+                    <Badge variant={isConfirmedBooking ? 'default' : 'secondary'} className="w-fit">
                         {isConfirmedBooking ? 'Confirmado' : 'Finalizado'}
                     </Badge>
                 </div>
-                    <Card>
-                        <CardContent className="flex flex-col p-3 gap-3">
-                            <div className="flex justify-between">
-                                <h2 className="font-bold">
-                                    {booking.service.name}
-                                </h2>
-                                <h2 className="font-bold">
-                                    {Intl.NumberFormat(
-                                        "pt-BR", {
-                                        style: "currency",
-                                        currency: "BRL",
-                                    }).format(Number(booking.service.price))}
-                                </h2>
-                            </div>
-                            <div className="flex justify-between">
-                                <h3 className="text-gray-400 text-sm">
-                                    Data
-                                </h3>
-                                <h3 className="text-sm">
-                                    {format(booking.date, "dd'/'MM'/'yy")}
-                                </h3>
-                            </div>
-                            <div className="flex justify-between">
-                                <h3 className="text-gray-400 text-sm">
-                                    Horário
-                                </h3>
-                                <h3 className="text-sm">
-                                    {format(booking.date, "HH:mm")}
-                                </h3>
-                            </div>
-                            <div className="flex justify-between">
-                                <h3 className="text-gray-400 text-sm">
-                                    Estabelecimento
-                                </h3>
-                                <h3 className="text-sm">
-                                    {booking.businessUnit.name}
-                                </h3>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
+                <Card>
+                    <CardContent className="flex flex-col p-3 gap-3">
+                        <div className="flex justify-between">
+                            <h2 className="font-bold">
+                                {booking.service.name}
+                            </h2>
+                            <h2 className="font-bold">
+                                {Intl.NumberFormat(
+                                    "pt-BR", {
+                                    style: "currency",
+                                    currency: "BRL",
+                                }).format(Number(booking.service.price))}
+                            </h2>
+                        </div>
+                        <div className="flex justify-between">
+                            <h3 className="text-gray-400 text-sm">
+                                Data
+                            </h3>
+                            <h3 className="text-sm">
+                                {format(booking.date, "dd'/'MM'/'yy")}
+                            </h3>
+                        </div>
+                        <div className="flex justify-between">
+                            <h3 className="text-gray-400 text-sm">
+                                Horário
+                            </h3>
+                            <h3 className="text-sm">
+                                {format(booking.date, "HH:mm")}
+                            </h3>
+                        </div>
+                        <div className="flex justify-between">
+                            <h3 className="text-gray-400 text-sm">
+                                Estabelecimento
+                            </h3>
+                            <h3 className="text-sm">
+                                {booking.businessUnit.name}
+                            </h3>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
             <div className="flex flex-col mt-3 gap-6">
                 <div className="relative h-[180px] w-full">
                     <Image
@@ -85,7 +112,7 @@ const BookingDetails = ({ booking }: BookingDetailsProps) => {
                             objectFit: "contain",
                         }}
                         alt={booking.businessUnit.name}
-                        
+
                     />
                     <div className="w-full absolute bottom-4 px-5 ">
                         <Card>
@@ -108,12 +135,26 @@ const BookingDetails = ({ booking }: BookingDetailsProps) => {
             </div>
             <SheetFooter className="flex-row gap-3 mt-3">
                 <SheetClose asChild>
-                    <Button variant="secondary" className="w-[50%]">
+                    <Button
+                        variant="secondary"
+                        className="w-[50%]">
                         Voltar
                     </Button>
                 </SheetClose>
-                <Button disabled={!isConfirmedBooking} variant="destructive" className="w-[50%]">
-                    Cancelar Agendamento
+                <Button
+                    disabled={!isConfirmedBooking || isDeleteIsLoading}
+                    variant="destructive"
+                    className="w-[50%]"
+                    onClick={handleCancelBooking}
+                >
+                    {isDeleteIsLoading ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        </>
+                    ) : (
+                        'Cancelar Agendamento'
+                    )}
+
                 </Button>
             </SheetFooter>
         </SheetContent>

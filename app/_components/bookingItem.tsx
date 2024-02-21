@@ -1,3 +1,5 @@
+"use client";
+
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Badge } from "./ui/badge";
 import { Card, CardContent } from "./ui/card"
@@ -7,6 +9,7 @@ import { Prisma } from "@prisma/client";
 import { Button } from "./ui/button";
 import { Sheet, SheetTrigger } from "./ui/sheet";
 import BookingDetails from "./bookingDetails";
+import { useState } from "react";
 
 
 interface BookingItemProps {
@@ -19,7 +22,9 @@ interface BookingItemProps {
 };
 
 const BookingItem = ({ booking }: BookingItemProps) => {
-    const isConfirmedBooking = isFuture(booking.date)
+    const isConfirmedBooking = isFuture(booking.date);
+
+    const [sheetIsOpen, setSheetIsOpen] = useState(false);
 
     return (
         <Card >
@@ -42,13 +47,13 @@ const BookingItem = ({ booking }: BookingItemProps) => {
                                 {booking.businessUnit.name}
                             </h3>
                             <div className="flex justify-end px-2">
-                                <Sheet>
+                                <Sheet open={sheetIsOpen} onOpenChange={setSheetIsOpen}>
                                     <SheetTrigger>
                                         <Button variant="outline" className="w-fit rounded-2xl text-xs h-fit bg-secondary hover:bg-slate-600">
                                             Detalhes
                                         </Button>
                                     </SheetTrigger>
-                                    <BookingDetails booking={booking} />
+                                    <BookingDetails booking={booking} sheetIsOpen={sheetIsOpen} setSheetIsOpen={setSheetIsOpen} />
                                 </Sheet>
                             </div>
                         </div>

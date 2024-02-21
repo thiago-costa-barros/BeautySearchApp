@@ -6,7 +6,6 @@ import Header from "../_components/header";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import { db } from "../_lib/prisma";
-import { isFuture, isPast } from "date-fns";
 
 const BookingsPage = async () => {
     const session = await getServerSession(authOptions)
