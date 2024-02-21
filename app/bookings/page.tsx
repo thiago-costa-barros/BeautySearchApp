@@ -59,21 +59,37 @@ const BookingsPage = async () => {
                 <h2 className="mb-3 font-bold text-sm text-gray-400 uppercase">
                     CONFIRMADOS
                 </h2>
-                <div className="flex flex-col gap-3">
-                    {confirmedBookings.map((booking) =>
-                        <BookingItem key={booking.id} booking={booking} />
-                    )}
-                </div>
+                {confirmedBookings.length === 0 ? (
+                    <div>
+                        <p className="font-bold text-gray-300">
+                            Você não possui agendamentos confirmados
+                        </p>
+                    </div>
+                ) : (
+                    <div className="flex flex-col gap-3">
+                        {confirmedBookings.map((booking) =>
+                            <BookingItem key={booking.id} booking={booking} />
+                        )}
+                    </div>
+                )}
             </div>
             <div className="flex flex-col gap-3 px-5 mt-6">
                 <h2 className="mb-3 font-bold text-sm text-gray-400 uppercase">
                     FINALIZADOS
                 </h2>
-                <div className="flex flex-col gap-3">
-                    {finishedBookings.map((booking) =>
-                        <BookingItem key={booking.id} booking={booking} />
-                    )}
-                </div>
+                {finishedBookings.length === 0 ? (
+                    <div>
+                        <p className="font-bold text-gray-300">
+                            Você não possui agendamentos finalizados
+                        </p>
+                    </div>
+                ) : (
+                    <div className="flex flex-col gap-3">
+                        {finishedBookings.map((booking) =>
+                            <BookingItem key={booking.id} booking={booking} />
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     );

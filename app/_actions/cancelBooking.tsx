@@ -1,5 +1,6 @@
 "use server"
 
+import { revalidatePath } from "next/cache";
 import { db } from "../_lib/prisma"
 
 export const cancelBooking = async (bookingId: any) => {
@@ -9,3 +10,5 @@ export const cancelBooking = async (bookingId: any) => {
         },
     });
 };
+
+revalidatePath("/bookings")
