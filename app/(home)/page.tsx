@@ -76,7 +76,7 @@ export default async function Home() {
             {bookings.length === 0 ? (
               <div>
                 <p className="font-bold text-sm text-gray-500">
-                  Você não possui agendamentos
+                  Você não possui agendamentos marcados
                 </p>
               </div>
             ) : (

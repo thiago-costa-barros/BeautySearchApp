@@ -14,6 +14,7 @@ export const getDateBookings = async (businessUnitId: number, date: Date) => {
             },
         },
     });
+    revalidatePath("/")
     revalidatePath("/bookings")
     return bookings;
 };

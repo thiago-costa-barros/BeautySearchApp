@@ -13,6 +13,9 @@ import { cancelBooking } from "../_actions/cancelBooking";
 import { toast } from "sonner";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogTitle, AlertDialogTrigger, AlertDialogHeader, AlertDialogFooter } from "./ui/alert-dialog";
+
+
 
 interface BookingDetailsProps {
     booking: Prisma.BookingGetPayload<{
@@ -141,22 +144,42 @@ const BookingDetails = ({ booking, sheetIsOpen, setSheetIsOpen }: BookingDetails
                         Voltar
                     </Button>
                 </SheetClose>
-                <Button
-                    disabled={!isConfirmedBooking || isDeleteIsLoading}
-                    variant="destructive"
-                    className="w-[50%]"
-                    onClick={handleCancelBooking}
-                >
-                    {isDeleteIsLoading ? (
-                        <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Cancelando
-                        </>
-                    ) : (
-                        'Cancelar Agendamento'
-                    )}
+                <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                        <Button
+                            disabled={!isConfirmedBooking || isDeleteIsLoading}
+                            variant="destructive"
+                            className="w-[50%]"                            
+                        >
+                            {isDeleteIsLoading ? (
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Cancelando
+                                </>
+                            ) : (
+                                'Cancelar Agendamento'
+                            )}
 
-                </Button>
+                        </Button>
+                        </AlertDialogTrigger>
+                    <AlertDialogContent className="w-[80%]">
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>Deseja cancelar o agendamento?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                                Após confirmada, essa ação não pode ser desfeita
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter className="flex-row gap-3">
+                            <AlertDialogCancel className="w-full mt-0">Voltar</AlertDialogCancel>
+                            <AlertDialogAction 
+                            className="w-full" 
+                            onClick={handleCancelBooking}
+                            >
+                                Cancelar
+                                </AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
             </SheetFooter>
         </SheetContent>
     );
