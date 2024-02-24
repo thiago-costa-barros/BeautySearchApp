@@ -5,11 +5,11 @@ import Search from "./_components/search";
 import Welcome from "./_components/welcome";
 import { db } from "../_lib/prisma";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
 import { isFuture } from "date-fns";
 import { Badge } from "../_components/ui/badge";
 import { Button } from "../_components/ui/button";
 import Link from "next/link";
+import { authOptions } from "../_lib/auth";
 
 
 export default async function Home() {
